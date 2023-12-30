@@ -36,7 +36,7 @@ def update_total_spent_by_supplier_on_create(sender, instance, created, **kwargs
         montant_achat = (instance.prix_unitaire_HT * instance.quantite)-instance.montant_paye
         fournisseur = instance.fournisseur
         fournisseur.solde += montant_achat
-        fournisseur.prix_total_depense_chez_fournisseur += montant_achat
+        fournisseur.prix_total_depense_chez_fournisseur += instance.prix_unitaire_HT * instance.quantite
         fournisseur.save()
 
 @receiver(post_delete, sender=Achat)
@@ -44,5 +44,5 @@ def update_total_spent_by_supplier_on_delete(sender, instance, **kwargs):
     montant_achat = (instance.prix_unitaire_HT * instance.quantite)-instance.montant_paye
     fournisseur = instance.fournisseur
     fournisseur.solde -= montant_achat
-    fournisseur.prix_total_depense_chez_fournisseur -= montant_achat
+    fournisseur.prix_total_depense_chez_fournisseur -= instance.prix_unitaire_HT * instance.quantite
     fournisseur.save()
