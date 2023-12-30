@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if form.instance.pk %}Modifier une Vente{% else %}Ajouter une Vente{% endif %}</title>
+</head>
+<body>
+    <h1>{% if form.instance.pk %}Modifier une Vente{% else %}Ajouter une Vente{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %}</button>
+    </form>
+    <a href="{% url 'vente_list' %}">Retour à la liste des Ventes</a>
+</body>
+</html>

@@ -1,0 +1,43 @@
+{% load custom_filters %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Ventes</title>
+</head>
+<body>
+    <h1>Liste des Ventes</h1>
+    <form method="GET">
+        <input type="text" name="q" placeholder="Rechercher une vente...">
+        <select name="client">
+            <option value="">Choisir un client</option>
+            {% for client in clients %}
+                <option value="{{ client.id }}">{{ client.nom }}</option>
+            {% endfor %}
+        </select>
+        <input type="date" name="date_debut" placeholder="Date de début">
+        <input type="date" name="date_fin" placeholder="Date de fin">
+        <button type="submit">Rechercher</button>
+    </form>
+    
+    <ul>
+        {% for vente in ventes %}
+            <li>
+                {{ vente.produit }} - {{ vente.client }}
+                <a href="{% url 'vente_edit' vente.pk %}">Modifier</a>
+                <a href="{% url 'vente_delete' vente.pk %}">Supprimer</a>
+                <a href="{% url 'vente_detail' vente.pk %}">Détails</a>
+                <!-- Utilisation du filtre pour calculer le montant total -->
+                {% with total=vente.quantite|multiply:vente.prix_unitaire %}
+                    {% if vente.montant_encaisse < total %}
+                        <a href="{% url 'vente_completer' vente.pk %}">Payer la suite</a>
+                    {% endif %}
+                {% endwith %}
+            </li>
+            <!-- Afficher d'autres détails de la vente si nécessaire -->
+        {% endfor %}
+    </ul>
+    <h4>Montant total des vente (montant gagne) : {{ total_montant_ventes }}</h4>
+    
+    <a href="{% url 'vente_new' %}">Ajouter une vente</a>
+</body>
+</html>
