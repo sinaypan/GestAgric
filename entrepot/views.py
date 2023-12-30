@@ -394,7 +394,7 @@ def etat_stock(request):
 
 
 
-# Rendu de la vue avec la valeur totale du stock
+# Rendu de la vue avec la valeur totale du st
     return render(request, 'EtatStock/etat_stock.html', {
         'etat_stock_global': etat_stock_global,
         'graphique_filename': graphique_filename,
