@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>État du Stock</title>
+    {% load static %}
+    <style>
+        @media print {
+            /* Styles spécifiques à l'impression */
+            body {
+                font-size: 12pt;
+                /* Ajoutez d'autres styles d'impression si nécessaire */
+            }
+            /* ... */
+        }
+    </style>
+</head>
+<body>
+    <h1>État du Stock Global</h1>
+
+    <!-- Formulaire de recherche pour filtrer l'état du stock -->
+    <form method="GET">
+        <input type="text" name="q" placeholder="Rechercher par nom de produit...">
+        <select name="fournisseur">
+            <option value="">Choisir un fournisseur</option>
+            {% for f in fournisseurs %}
+                <option value="{{ f.id }}">{{ f.nom }}</option>
+            {% endfor %}
+        </select>
+        <input type="date" name="date_debut" placeholder="Date de début">
+        <input type="date" name="date_fin" placeholder="Date de fin">
+        <button type="submit">Rechercher</button>
+    </form>
+
+    <div>
+        <h2>Graphique de l'état du stock</h2>
+        <img src="{% static 'media/etat_stock_graph.png' %}" alt="Graphique État du Stock">
+    </div>
+    <h1>Total Stock Value: {{ total_stock_value }}</h1>
+    <h2>Liste de l'état du stock par produit</h2>
+    <ul>
+        {% for stock in etat_stock_global %}
+            <li>{{ stock.produit__designation }} : {{ stock.total_quantite }}</li>
+        {% endfor %}
+    </ul>
+    <h1><button onclick="printPage()">Imprimer</button></h1>
+
+</body>
+<script>
+    function printPage() {
+        window.print();
+    }
+</script>
+
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Transferts</title>
+</head>
+<body>
+    <h1>Liste des Transferts</h1>
+    <form method="GET">
+        <input type="text" name="q" placeholder="Rechercher un transfert...">
+
+        <!-- Champs pour la plage de dates -->
+        <input type="date" name="date_debut" placeholder="Date de début">
+        <input type="date" name="date_fin" placeholder="Date de fin">
+        
+        <button type="submit">Rechercher</button>
+    </form>
+    
+    <ul>
+        {% for transfert in transferts %}
+            <li>
+                {{ transfert.produit }} - {{ transfert.centre_destination }}
+                <a href="{% url 'transfert_edit' transfert.pk %}">Modifier</a>
+                <a href="{% url 'transfert_delete' transfert.pk %}">Supprimer</a>
+                <a href="{% url 'transfert_detail' transfert.pk %}">Détails</a>
+            </li>
+            <!-- Afficher d'autres détails du transfert si nécessaire -->
+        {% endfor %}
+    </ul>
+    
+    <a href="{% url 'transfert_new' %}">Ajouter un transfert</a>
+</body>
+</html>

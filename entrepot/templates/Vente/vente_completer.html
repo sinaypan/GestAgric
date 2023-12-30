@@ -1,0 +1,16 @@
+{% load custom_filters %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Compléter la Vente</title>
+</head>
+<body>
+    <h1>Compléter la Vente : {{ vente.produit }}</h1>
+    <p>Crédit actuel du client : {{ client.credit }}</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Compléter le Paiement</button>
+    </form>
+</body>
+</html>

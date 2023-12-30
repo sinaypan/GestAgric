@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Employés</title>
+</head>
+<body>
+    <h1>Liste des Employés</h1>
+    <form method="GET">
+        <input type="text" name="q" placeholder="Rechercher un employé...">
+        <button type="submit">Rechercher</button>
+    </form>
+    
+    <ul>
+        {% for employe in employes %}
+            <li>
+                {{ employe.nom }}
+                <a href="{% url 'employe_detail' employe.pk %}">Détails</a>
+                <a href="{% url 'employe_edit' employe.pk %}">Modifier</a>
+                <a href="{% url 'employe_delete' employe.pk %}">Supprimer</a>
+            </li>
+            <!-- Afficher d'autres détails de l'employé si nécessaire -->
+        {% endfor %}
+    </ul>
+    
+    <a href="{% url 'employe_new' %}">Ajouter un Employé</a>
+</body>
+</html>

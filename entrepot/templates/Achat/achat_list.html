@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Achats</title>
+</head>
+<body>
+    <h1>Liste des Achats</h1>
+    <form method="GET">
+        <input type="text" name="q" placeholder="Rechercher un achat par désignation du produit...">
+        <!-- Champ pour sélectionner le fournisseur -->
+        <select name="fournisseur">
+            <option value="">Choisir un fournisseur</option>
+            {% for fournisseur in fournisseurs %}
+                <option value="{{ fournisseur.id }}">{{ fournisseur.nom }}</option>
+            {% endfor %}
+        </select>
+        <!-- Champs pour la plage de dates -->
+        <input type="date" name="date_debut" placeholder="Date de début">
+        <input type="date" name="date_fin" placeholder="Date de fin">
+        <button type="submit">Rechercher</button>
+    </form>
+    
+    <ul>
+        {% for achat in Achats %}
+            <li>
+                {{ achat.produit }} - {{ achat.fournisseur }}
+                <a href="{% url 'achat_edit' achat.pk %}">Modifier</a>
+                <a href="{% url 'achat_delete' achat.pk %}">Supprimer</a>
+                <a href="{% url 'achat_detail' achat.pk %}">Détails</a>
+            </li>
+            <!-- Afficher d'autres détails du centre si nécessaire -->
+        {% endfor %}
+    </ul>
+    <h4>Montant total des achats (montant paye) : {{ total_montant_achats }}</h4>
+
+    
+    <a href="{% url 'achat_new' %}">Ajouter un achat</a>
+</body>
+</html>

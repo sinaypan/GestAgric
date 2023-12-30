@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if produit.pk %}Modifier{% else %}Ajouter{% endif %} un produit</title>
+</head>
+<body>
+    <h1>{% if produit.pk %}Modifier{% else %}Ajouter{% endif %} un produit</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">{% if produit.pk %}Modifier{% else %}Ajouter{% endif %}</button>
+    </form>
+    <a href="{% url 'produit_list' %}">Retour à la liste des produits</a>
+</body>
+</html>

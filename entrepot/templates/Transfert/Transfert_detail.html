@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Détails du Transfert</title>
+</head>
+<body>
+    <h1>Détails du Transfert</h1>
+    <p>ID: {{ transfert.id }}</p>
+    <p>Produit: {{ transfert.produit }}</p>
+    <p>Centre de destination: {{ transfert.centre_destination }}</p>
+    <p>Quantité: {{ transfert.quantite }}</p>
+    <p>Date de transfert: {{ transfert.date_transfert }}</p>
+    <!-- Afficher d'autres détails du transfert si nécessaire -->
+
+    <a href="{% url 'transfert_edit' pk=transfert.pk %}">Modifier</a>
+    <a href="{% url 'transfert_delete' pk=transfert.pk %}">Supprimer</a>
+    <a href="{% url 'transfert_list' %}">Retour à la liste des Transferts</a>
+</body>
+</html>

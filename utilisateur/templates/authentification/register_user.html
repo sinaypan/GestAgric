@@ -1,0 +1,15 @@
+<!-- register_user.html -->
+
+
+
+{% block content %}
+    <h1>Register</h1>
+    <br>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <input type="submit" value="Register" class="btn btn-primary">
+    </form>
+{% endblock %}

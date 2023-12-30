@@ -1,0 +1,33 @@
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Détails de l'achat</title>
+</head>
+<body>
+    <h1>Détails de l'achat</h1>
+    <p>ID: {{ Achat.id }}</p>
+    <p>Produit: {{ Achat.produit }}</p>
+    <p>Fournisseur: {{ Achat.fournisseur }}</p>
+    <p>Quantité: {{ Achat.quantite }}</p>
+    <p>Prix unitaire HT: {{ Achat.prix_unitaire_HT }}</p>
+    <p>Montant : {{ Achat.quantite|multiply:Achat.prix_unitaire_HT }}</p>
+    <p>Date d'achat: {{ Achat.date_achat }}</p>
+    <p>Montant total payé: {{ Achat.montant_paye }}</p>
+    {% if Achat.paiement_partiel %}
+        <p>Paiement partiel effectué</p>
+    {% else %}
+        {% if Achat.montant_paye == Achat.quantite|multiply:Achat.prix_unitaire_HT %}
+            <p>Entièrement payé: Oui</p>
+        {% elif Achat.montant_paye > Achat.quantite|multiply:Achat.prix_unitaire_HT %}
+            <p>Entièrement payé: Oui (Montant excédentaire)</p>
+        {% else %}
+            <p>Entièrement payé: Non</p>
+        {% endif %}
+    {% endif %}
+    <a href="{% url 'achat_edit' pk=Achat.pk %}">Modifier</a>
+    <a href="{% url 'achat_delete' pk=Achat.pk %}">Supprimer</a>
+    <a href="{% url 'achat_list' %}">Retour à la liste</a>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Produits</title>
+</head>
+<body>
+    <h1>Liste des Produits</h1>
+    <form method="GET">
+        <input type="text" name="q" placeholder="Rechercher un produit...">
+        <button type="submit">Rechercher</button>
+    </form>
+    
+    <ul>
+        {% for produit in produits %}
+            <li>
+                <a href="{% url 'produit_detail' produit.pk %}">{{ produit.designation }}</a>
+                <a href="{% url 'produit_edit' produit.pk %}">Modifier</a>
+                <a href="{% url 'produit_delete' produit.pk %}">Supprimer</a>
+            </li>
+            <!-- Autres détails du produit -->
+        {% endfor %}
+    </ul>
+    
+    <a href="{% url 'produit_new' %}">Ajouter un Produit</a>
+</body>
+</html>

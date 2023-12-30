@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Détails du Centre</title>
+</head>
+<body>
+    <h1>Détails du Centre</h1>
+    <p>Code : {{ centre.code }}</p>
+    <p>Désignation : {{ centre.designation }}</p>
+    <!-- Affichez d'autres détails du Centre si nécessaire -->
+    <a href="{% url 'centre_edit' centre.pk %}">Modifier</a>
+    <a href="{% url 'centre_delete' centre.pk %}">Supprimer</a>
+    <a href="{% url 'centre_list' %}">Retour à la liste des Centres</a>
+</body>
+</html>

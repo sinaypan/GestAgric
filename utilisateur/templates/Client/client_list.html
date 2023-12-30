@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Clients</title>
+</head>
+<body>
+    <h1>Liste des Clients</h1>
+    <form method="GET">
+        <input type="text" name="q" placeholder="Rechercher un client...">
+        <button type="submit">Rechercher</button>
+    </form>
+    
+    <ul>
+        {% for client in clients %}
+            <li>
+                {{ client.nom }} - {{ client.adresse }}
+                <a href="{% url 'client_detail' client.pk %}">Détails</a>
+                <a href="{% url 'client_edit' client.pk %}">Modifier</a>
+                <a href="{% url 'client_delete' client.pk %}">Supprimer</a>
+            </li>
+        {% endfor %}
+    </ul>
+    
+    <a href="{% url 'client_new' %}">Ajouter un client</a>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Détails de la Vente</title>
+</head>
+<body>
+    <h1>Détails de la Vente</h1>
+    <p>ID: {{ vente.id }}</p>
+    <p>Produit: {{ vente.produit }}</p>
+    <p>Client: {{ vente.client }}</p>
+    <p>Quantité: {{ vente.quantite }}</p>
+    <p>Prix unitaire: {{ vente.prix_unitaire }}</p>
+    <p>Montant encaisse : {{vente.montant_encaisse}}</p>
+    <p>Date de vente: {{ vente.date_vente }}</p>
+    <!-- Afficher d'autres détails de la vente si nécessaire -->
+
+    <a href="{% url 'vente_edit' pk=vente.pk %}">Modifier</a>
+    <a href="{% url 'vente_delete' pk=vente.pk %}">Supprimer</a>
+    <a href="{% url 'vente_list' %}">Retour à la liste des Ventes</a>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Détails du fournisseur</title>
+</head>
+<body>
+    <h1>Détails du fournisseur</h1>
+    <p>Code : {{ fournisseur.code }}</p>
+    <p>Nom : {{ fournisseur.nom }}</p>
+    <p>Adresse : {{ fournisseur.adresse }}</p>
+    <p>Téléphone : {{ fournisseur.telephone }}</p>
+    <p>Solde : {{ fournisseur.solde }}</p>
+    <!-- Display other fields as needed -->
+    
+    <!-- Actions -->
+    <a href="{% url 'fournisseur_edit' fournisseur.pk %}">Modifier</a>
+    <a href="{% url 'fournisseur_delete' fournisseur.pk %}">Supprimer</a>
+    <a href="{% url 'fournisseur_list' %}">Retour à la liste des fournisseurs</a>
+</body>
+</html>

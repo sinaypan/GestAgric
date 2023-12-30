@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des fournisseurs</title>
+</head>
+<body>
+    <h1>Liste des fournisseurs</h1>
+    <form method="GET">
+        <input type="text" name="q" placeholder="Rechercher un fournisseur...">
+        <button type="submit">Rechercher</button>
+    </form>
+    
+    <ul>
+        {% for fournisseur in fournisseurs %}
+            <li>
+                <a href="{% url 'fournisseur_detail' fournisseur.pk %}">{{ fournisseur.nom }}</a>
+                <a href="{% url 'fournisseur_edit' fournisseur.pk %}">Modifier</a>
+                <a href="{% url 'fournisseur_delete' fournisseur.pk %}">Supprimer</a>
+            </li>
+        {% endfor %}
+    </ul>
+    
+    <a href="{% url 'fournisseur_new' %}">Ajouter un fournisseur</a>
+</body>
+</html>

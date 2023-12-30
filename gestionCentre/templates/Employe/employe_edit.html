@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un Employé</title>
+</head>
+<body>
+    <h1>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un Employé</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %}</button>
+    </form>
+    <a href="{% url 'employe_list' %}">Retour à la liste des employés</a>
+</body>
+</html>

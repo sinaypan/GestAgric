@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un Achat</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un Achat</h1>
+    <form method="post" class="post-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %}</button>
+        {% if not form.instance.pk %}
+        <br><a href="{% url 'fournisseur_new1' %}" >Nouveau Fournisseur</a>
+        <br><a href="{% url 'produit_new1' %}" >Nouveau Produit</a>
+        {% endif %}
+    </form>
+    <a href="{% url 'achat_list' %}">Retour à la liste des Achats</a>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        // In your Javascript (external .js resource or <script> tag)
+        $(document).ready(function() {
+            $('#id_produit').select2();
+        });
+    </script>
+</body>
+</html>
