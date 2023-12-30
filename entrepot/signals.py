@@ -33,7 +33,7 @@ def update_stock_on_product_deletion(sender, instance, **kwargs):
 @receiver(post_save, sender=Achat)
 def update_total_spent_by_supplier_on_create(sender, instance, created, **kwargs):
     if created:
-        montant_achat = instance.prix_unitaire_HT * instance.quantite
+        montant_achat = (instance.prix_unitaire_HT * instance.quantite)-instance.montant_paye
         fournisseur = instance.fournisseur
         fournisseur.solde += montant_achat
         fournisseur.prix_total_depense_chez_fournisseur += montant_achat
@@ -41,7 +41,7 @@ def update_total_spent_by_supplier_on_create(sender, instance, created, **kwargs
 
 @receiver(post_delete, sender=Achat)
 def update_total_spent_by_supplier_on_delete(sender, instance, **kwargs):
-    montant_achat = instance.prix_unitaire_HT * instance.quantite
+    montant_achat = (instance.prix_unitaire_HT * instance.quantite)-instance.montant_paye
     fournisseur = instance.fournisseur
     fournisseur.solde -= montant_achat
     fournisseur.prix_total_depense_chez_fournisseur -= montant_achat
