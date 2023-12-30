@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.db.models import F
 
+#test
 
 class Fournisseur(models.Model):
     code = models.CharField(max_length=20)
