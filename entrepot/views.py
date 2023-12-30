@@ -389,10 +389,10 @@ def etat_stock(request):
         total_value = sum(purchase.quantite * purchase.prix_unitaire_HT for purchase in purchases)
         stock['total_value'] = total_value
 
-# Retrieve the total value of the entire stock
+
     total_stock_value = sum(stock['total_value'] for stock in etat_stock_global)
 
-# ... (existing code remains unchanged)
+
 
 # Rendu de la vue avec la valeur totale du stock
     return render(request, 'EtatStock/etat_stock.html', {
