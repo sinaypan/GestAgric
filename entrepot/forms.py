@@ -7,13 +7,13 @@ class FournisseurForm(forms.ModelForm):
     class Meta:
         model = Fournisseur
         fields = '__all__'
-        exclude=['solde']
+        exclude=['solde', 'prix_total_depense_chez_fournisseur']
 
 class ProduitForm(forms.ModelForm):
     class Meta:
         model = Produit
         fields = '__all__'
-
+        exclude=['nombre_vente']
 
 
 class AchatForm(forms.ModelForm):
