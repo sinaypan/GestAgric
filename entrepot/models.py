@@ -32,8 +32,76 @@ class Achat(models.Model):
     paiement_partiel = models.BooleanField(default=False)
     montant_paye = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
+    def save(self, *args, **kwargs):
+        # Gérer les achats existants
+        if self.pk:  # Vérifier si l'achat existe déjà
+            ancien_achat = Achat.objects.get(pk=self.pk)
+            ancienne_diff = ancien_achat.quantite * ancien_achat.prix_unitaire_HT - ancien_achat.montant_paye
+            self.fournisseur.solde -= ancienne_diff
 
-    
+        total_achat = self.quantite * self.prix_unitaire_HT
+        difference = total_achat - self.montant_paye
+
+        # Mise à jour du solde du fournisseur, même pour les paiements non-partiels incomplets
+        if self.paiement_partiel or difference != 0:
+            self.fournisseur.solde += difference
+
+        self.fournisseur.save()
+
+
+        # Vérifier l'état du stock avant d'enregistrer l'achat
+        etat_stock, created = EtatStock.objects.get_or_create(produit=self.produit)
+
+        # Si c'est un nouvel achat
+        if not self.pk:
+            if self.quantite > etat_stock.quantite:
+                raise ValidationError("Quantité d'achat supérieure à la quantité en stock. Vous ne pouvez pas procéder à cet achat.")
+            else:
+                # Mettre à jour l'état du stock
+                etat_stock.quantite = F('quantite') - self.quantite
+                etat_stock.save()
+        else:#maj case
+            ancien_achat = Achat.objects.get(pk=self.pk)
+            ancienne_quantite = ancien_achat.quantite
+
+            # Quantité disponible pour la mise à jour
+            quantite_disponible = etat_stock.quantite + ancienne_quantite
+
+            if self.quantite > quantite_disponible:
+                raise ValidationError("Quantité d'achat supérieure à la quantité disponible en stock. Vous ne pouvez pas procéder à cet achat.")
+            else:
+                etat_stock.quantite = F('quantite') - self.quantite + ancienne_quantite
+                etat_stock.save()
+
+            
+        super().save(*args, **kwargs)
+
+
+
+    def delete(self, *args, **kwargs):
+        # Récupérer ou créer l'état du stock pour le produit de cet achat
+        etat_stock, created = EtatStock.objects.get_or_create(produit=self.produit)
+
+        # Augmenter la quantité en stock
+        etat_stock.quantite += self.quantite
+        etat_stock.save()
+
+        #ajuster solde lors de la suppression
+        
+        total_achat = self.quantite * self.prix_unitaire_HT
+        difference = total_achat - self.montant_paye
+        self.fournisseur.solde -= difference
+        self.fournisseur.save()
+
+        # Appeler la méthode delete originale pour supprimer l'achat
+        super().delete(*args, **kwargs)
+
+
+    def __str__(self):
+        return f"Achat de {self.produit} chez {self.fournisseur} le {self.date_achat}"
+
+
+
     def __str__(self):
         return f"Achat de {self.produit} chez {self.fournisseur} le {self.date_achat}"
 
