@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Liste des fournisseurs</title>
+    {% load static %}
 </head>
 <body>
     <h1>Liste des fournisseurs</h1>
@@ -21,5 +22,6 @@
     </ul>
     
     <a href="{% url 'fournisseur_new' %}">Ajouter un fournisseur</a>
+    <img src="{{ graphique_url }}" alt="Top 10 des fournisseurs ">
 </body>
 </html>

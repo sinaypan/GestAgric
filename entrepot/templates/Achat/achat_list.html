@@ -31,7 +31,7 @@
             <!-- Afficher d'autres détails du centre si nécessaire -->
         {% endfor %}
     </ul>
-    <h4>Montant total des achats (montant paye) : {{ total_montant_achats }}</h4>
+    <h4>Montant total des achats (montant paye) : {{ total_montant_achats_payer }}/{{total_montant_achats}}</h4>
 
     
     <a href="{% url 'achat_new' %}">Ajouter un achat</a>

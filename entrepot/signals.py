@@ -1,6 +1,7 @@
-from django.db.models.signals import post_save, pre_delete,post_delete
+from django.db.models.signals import post_save, pre_delete,post_delete,pre_save
 from django.dispatch import receiver
-from .models import Achat, EtatStock
+from .models import Achat, EtatStock,Vente ,StockManager
+from utilisateur.models import Client
 
 @receiver(post_save, sender=Achat)
 def update_stock_on_product_creation_or_update(sender, instance, created, **kwargs):
@@ -46,3 +47,86 @@ def update_total_spent_by_supplier_on_delete(sender, instance, **kwargs):
     fournisseur.solde -= montant_achat
     fournisseur.prix_total_depense_chez_fournisseur -= instance.prix_unitaire_HT * instance.quantite
     fournisseur.save()
+
+
+
+
+
+
+
+
+
+
+@receiver(pre_save, sender=Vente)
+def check_stock_and_update(sender, instance, **kwargs):
+    produit = instance.produit
+    quantite_vendue = instance.quantite
+
+    try:
+        etat_stock_produit = EtatStock.objects.get(produit=produit)
+        if quantite_vendue > etat_stock_produit.quantite:
+            raise ValueError('La quantité à vendre est supérieure à celle en stock')
+    except EtatStock.DoesNotExist:
+        raise ValueError('État du stock pour ce produit introuvable')
+
+@receiver(post_save, sender=Vente)
+def update_stock_and_client_credit(sender, instance, created, **kwargs):
+    produit = instance.produit
+    quantite_vendue = instance.quantite
+
+    if created:
+        etat_stock_produit = EtatStock.objects.get(produit=produit)
+        etat_stock_produit.quantite -= quantite_vendue
+        etat_stock_produit.save()
+
+        produit.nombre_vente += quantite_vendue
+        produit.save()
+
+        difference_prix = (quantite_vendue * instance.prix_unitaire) - instance.montant_encaisse
+
+        if instance.paiement_partiel or difference_prix != 0:
+            instance.client.credit += difference_prix
+            instance.client.save()
+
+        instance.client.prix_total_depense_par_client += (quantite_vendue * instance.prix_unitaire)
+        instance.client.save()
+
+@receiver(pre_delete, sender=Vente)
+def update_stock_on_delete(sender, instance, **kwargs):
+    produit = instance.produit
+    quantite_vendue = instance.quantite
+
+    etat_stock_produit = EtatStock.objects.get(produit=produit)
+    etat_stock_produit.quantite += quantite_vendue
+    etat_stock_produit.save()
+
+    produit.nombre_vente -= quantite_vendue
+    produit.save()
+
+    difference_prix = (quantite_vendue * instance.prix_unitaire) - instance.montant_encaisse
+
+    if instance.paiement_partiel or difference_prix != 0:
+        
+        instance.client.credit -= difference_prix
+        instance.client.save()
+
+    instance.client.prix_total_depense_par_client -= (quantite_vendue * instance.prix_unitaire)
+    instance.client.save()
+
+@receiver(post_save, sender=Vente)
+def update_stock_and_client_credit(sender, instance, created, **kwargs):
+    if created:
+        StockManager.update_total_value_minus(instance)
+
+@receiver(post_delete, sender=Vente)
+def update_total_stock_value_after_delete(sender, instance, **kwargs):
+    StockManager.update_total_value_plus(instance)
+
+@receiver(post_save, sender=Achat)
+def update_total_stock_value(sender, instance, created, **kwargs):
+    if created:
+        StockManager.update_total_stock_value()
+
+@receiver(post_delete, sender=Achat)
+def update_total_stock_value_after_delete(sender, instance, **kwargs):
+    StockManager.update_total_stock_value()

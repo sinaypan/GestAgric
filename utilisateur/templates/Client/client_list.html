@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Liste des Clients</title>
+    {% load static %}
 </head>
 <body>
     <h1>Liste des Clients</h1>
@@ -20,7 +21,7 @@
             </li>
         {% endfor %}
     </ul>
-    
     <a href="{% url 'client_new' %}">Ajouter un client</a>
+    <img src="{{ graphique_url }}" alt="Top 10 des Clients">
 </body>
 </html>

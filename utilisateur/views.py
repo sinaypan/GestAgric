@@ -6,13 +6,44 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from .forms import RegisterUserForm
+import matplotlib.pyplot as plt
+from django.db.models import Sum
+
 
 def client_list(request):
     query = request.GET.get('q')
     clients = Client.objects.all()
     if query:
         clients = clients.filter(nom__icontains=query)
-    return render(request, 'Client/client_list.html', {'clients': clients})
+
+     # Récupérer les 10 clients ayant dépensé le plus
+    clients_top_depense = Client.objects.order_by('-prix_total_depense_par_client')[:10]
+
+    # Extraire les noms des clients et leurs dépenses totales
+    noms_clients = [client.nom for client in clients_top_depense]
+    depenses = [client.prix_total_depense_par_client for client in clients_top_depense]
+
+    # Créer le graphique
+    plt.figure(figsize=(10, 6))
+    plt.bar(noms_clients, depenses)
+    plt.xlabel('Clients')
+    plt.ylabel('Dépenses totales')
+    plt.title('Top 10 des clients ayant dépensé le plus')
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
+
+    # Sauvegarder le graphique
+    graphique_filename = 'top10_clients_depense.png'
+    graphique_path = f'utilisateur/static/media/{graphique_filename}'
+    plt.savefig(graphique_path)
+
+    # Rendre le graphique accessible dans le contexte du template
+    graphique_url = f'/static/media/{graphique_filename}'
+
+    return render(request, 'Client/client_list.html', {
+        'clients': clients,
+        'graphique_url': graphique_url,  # Envoyer l'URL du graphique au template
+    })
 
 def client_detail(request, pk):
     client = get_object_or_404(Client, pk=pk)

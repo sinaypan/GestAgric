@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Liste des Ventes</title>
+    {% load static %}
 </head>
 <body>
     <h1>Liste des Ventes</h1>
@@ -36,8 +37,12 @@
             <!-- Afficher d'autres détails de la vente si nécessaire -->
         {% endfor %}
     </ul>
+    <h4>Montant total du stock : {{ total_stock_value }}</h4>
     <h4>Montant total des vente (montant gagne) : {{ total_montant_ventes }}</h4>
-    
+    <h4>Montant total des benefices : {{ total_benefice }}</h4>
     <a href="{% url 'vente_new' %}">Ajouter une vente</a>
+    <br>
+    <img src="{% static 'media/top10best-sellers.png' %}" alt="top 10 best-sellers">
+    
 </body>
 </html>

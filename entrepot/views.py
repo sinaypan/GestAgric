@@ -1,10 +1,10 @@
 
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Fournisseur, Produit, Achat, Transfert, Vente ,EtatStock
+from .models import Fournisseur, Produit, Achat, Transfert, Vente ,EtatStock,StockManager
 from .forms import FournisseurForm, ProduitForm, AchatForm, TransfertForm,VenteForm,MontantAjouteForm
 from django.utils.dateparse import parse_date
 from utilisateur.models import Client
-from django.db.models import Sum
+from django.db.models import Sum, FloatField
 from django.db.models import F, ExpressionWrapper, DecimalField
 import matplotlib.pyplot as plt
 
@@ -13,11 +13,38 @@ def fournisseur_list(request):
     query = request.GET.get('q')
     fournisseurs = Fournisseur.objects.all()
 
+    # Filtrer les fournisseurs par nom s'il y a une requête
     if query:
-        fournisseurs = fournisseurs.filter(nom__icontains=query)  # Filtrer par le champ 'nom'
+        fournisseurs = fournisseurs.filter(nom__icontains=query)
 
-    return render(request, 'Fournisseur/fournisseur_list.html', {'fournisseurs': fournisseurs})
+    # Récupérer les 10 fournisseurs avec le plus grand total de dépenses
+    fournisseurs_top_depense = fournisseurs.order_by('-prix_total_depense_chez_fournisseur')[:10]
 
+    # Extraire les noms des fournisseurs et leurs dépenses totales
+    noms_fournisseurs = [fournisseur.nom for fournisseur in fournisseurs_top_depense]
+    depenses = [fournisseur.prix_total_depense_chez_fournisseur for fournisseur in fournisseurs_top_depense]
+
+    # Créer le graphique
+    plt.figure(figsize=(10, 6))
+    plt.bar(noms_fournisseurs, depenses)
+    plt.xlabel('Fournisseurs')
+    plt.ylabel('Total des dépenses')
+    plt.title('Top 10 des fournisseurs ayant le plus de dépenses')
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
+
+    # Sauvegarder le graphique
+    graphique_filename = 'top10_fournisseurs_depense.png'
+    graphique_path = f'entrepot/static/media/{graphique_filename}'
+    plt.savefig(graphique_path)
+
+    # Rendre le graphique accessible dans le contexte du template
+    graphique_url = f'/static/media/{graphique_filename}'
+
+    return render(request, 'Fournisseur/fournisseur_list.html', {
+        'fournisseurs': fournisseurs,
+        'graphique_url': graphique_url,  # Envoyer l'URL du graphique au template
+    })
 
 def fournisseur_detail(request, pk):
     fournisseur = get_object_or_404(Fournisseur, pk=pk)
@@ -135,11 +162,15 @@ def Achat_list(request):
     fournisseurs = Fournisseur.objects.all()
 
     # Calcul du montant total des achats
-    total_montant_achats = Achats.aggregate(Sum('montant_paye'))['montant_paye__sum'] or 0
+    total_montant_achats_payer = Achats.aggregate(Sum('montant_paye'))['montant_paye__sum'] or 0
+    total_montant_achats = Achat.objects.aggregate(
+    total=Sum(F('prix_unitaire_HT') * F('quantite'), output_field=FloatField())
+)['total'] or 0
 
     return render(request, 'Achat/Achat_list.html', {
         'Achats': Achats,
         'fournisseurs': fournisseurs,
+        'total_montant_achats_payer': total_montant_achats_payer,
         'total_montant_achats': total_montant_achats
     })
 
@@ -270,25 +301,57 @@ def Vente_list(request):
     ventes = Vente.objects.all()
 
     if date_debut and date_fin:
-        # Conversion des chaînes de date en objets date
         start_date = parse_date(date_debut)
         end_date = parse_date(date_fin)
         if start_date and end_date:
-            # Filtrer les achats dans la plage de dates
             ventes = ventes.filter(date_vente__range=[start_date, end_date])
 
     if query:
-        ventes = ventes.filter(produit__nom__icontains=query)  # Filtrez par le nom du produit si nécessaire
+        ventes = ventes.filter(produit__designation__icontains=query)
 
     if client_id:
         ventes = ventes.filter(client__id=client_id)
     
-    # Calcul du montant total des achats
     total_montant_ventes = ventes.aggregate(Sum('montant_encaisse'))['montant_encaisse__sum'] or 0
 
     clients = Client.objects.all()
-    return render(request, 'Vente/vente_list.html', {'ventes': ventes, 'clients': clients, 'total_montant_ventes':total_montant_ventes})
 
+    # Récupérer les 10 produits les plus vendus
+    produits_best_seller = Produit.objects.order_by('-nombre_vente')[:10]
+
+    # Extraire les noms des produits et les quantités vendues
+    noms_produits = [produit.designation for produit in produits_best_seller]
+    quantites = [produit.nombre_vente for produit in produits_best_seller]
+
+    # Créer le graphique
+    plt.figure(figsize=(10, 6))
+    plt.bar(noms_produits, quantites)
+    plt.xlabel('Produits')
+    plt.ylabel('Nombre de ventes')
+    plt.title('Top 10 des produits best-sellers ')
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
+
+    # Sauvegarder le graphique
+    graphique_filename = 'top10best-sellers.png'
+    graphique_path = f'entrepot/static/media/{graphique_filename}'
+    plt.savefig(graphique_path)
+
+    # Rendre le graphique accessible dans le contexte du template
+    graphique_url = f'/static/media/{graphique_filename}'
+
+    total_stock_value=StockManager.total_stock_value
+    total_benefice = total_montant_ventes - total_stock_value
+    total_benefice = max(total_benefice, 0)
+
+    return render(request, 'Vente/vente_list.html', {
+        'ventes': ventes,
+        'clients': clients,
+        'total_stock_value': total_stock_value,
+        'total_montant_ventes': total_montant_ventes,
+        'total_benefice': total_benefice,
+        'graphique_url': graphique_url, 
+    })
 
 def Vente_detail(request, pk):
     vente_instance = get_object_or_404(Vente, pk=pk)
@@ -385,16 +448,9 @@ def etat_stock(request):
         # Calculate total quantity for this product
         total_quantite = stock['total_quantite']
         
-        # Calculate total value for this product based on purchases
-        total_value = sum(purchase.quantite * purchase.prix_unitaire_HT for purchase in purchases)
-        stock['total_value'] = total_value
+    total_stock_value = StockManager.total_stock_value  # Récupérez la valeur totale mise à jour
 
-
-    total_stock_value = sum(stock['total_value'] for stock in etat_stock_global)
-
-
-
-# Rendu de la vue avec la valeur totale du st
+    # Rendu de la vue avec la valeur totale du stock
     return render(request, 'EtatStock/etat_stock.html', {
         'etat_stock_global': etat_stock_global,
         'graphique_filename': graphique_filename,
