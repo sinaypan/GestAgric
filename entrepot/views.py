@@ -299,18 +299,23 @@ def Vente_list(request):
     client_id = request.GET.get('client')
 
     ventes = Vente.objects.all()
+    achats=Achat.objects.all()
 
     if date_debut and date_fin:
         start_date = parse_date(date_debut)
         end_date = parse_date(date_fin)
         if start_date and end_date:
             ventes = ventes.filter(date_vente__range=[start_date, end_date])
+            achats = achats.filter(date_achat__range=[start_date, end_date])
+
 
     if query:
         ventes = ventes.filter(produit__designation__icontains=query)
+        achats = achats.filter(produit__designation__icontains=query)
 
     if client_id:
         ventes = ventes.filter(client__id=client_id)
+        achats = achats.filter(produit__designation__icontains=query)
     
     total_montant_ventes = ventes.aggregate(Sum('montant_encaisse'))['montant_encaisse__sum'] or 0
 
@@ -341,8 +346,10 @@ def Vente_list(request):
     graphique_url = f'/static/media/{graphique_filename}'
 
     total_stock_value=StockManager.total_stock_value
-    total_benefice = total_montant_ventes - total_stock_value
-    total_benefice = max(total_benefice, 0)
+    total_montant_ventes = ventes.aggregate(Sum('montant_encaisse'))['montant_encaisse__sum'] or 0
+    total_montant_achats_payer = achats.aggregate(Sum('montant_paye'))['montant_paye__sum'] or 0
+
+    total_benefice = total_montant_ventes - total_montant_achats_payer
 
     return render(request, 'Vente/vente_list.html', {
         'ventes': ventes,

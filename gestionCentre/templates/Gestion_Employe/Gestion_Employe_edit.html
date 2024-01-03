@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} Gestion d'Employé</title>
+</head>
+<body>
+    <h1>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} la Gestion d'Employé</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">{% if form.instance.pk %}Sauvegarder les Changements{% else %}Ajouter Gestion{% endif %}</button>
+    </form>
+    {% if form.instance.pk %}
+        <a href="{% url 'gerer_employe_detail' form.instance.employe.id %}">Retour aux détails de la gestion</a>
+    {% else %}
+        <a href="{% url 'gestion_employe_list' %}">Retour à la liste des gestions</a>
+    {% endif %}
+</body>
+</html>

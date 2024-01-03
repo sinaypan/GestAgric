@@ -38,7 +38,23 @@ def update_total_spent_by_supplier_on_create(sender, instance, created, **kwargs
         fournisseur = instance.fournisseur
         fournisseur.solde += montant_achat
         fournisseur.prix_total_depense_chez_fournisseur += instance.prix_unitaire_HT * instance.quantite
-        fournisseur.save()
+        
+    else:#modif
+        fournisseur = instance.fournisseur
+        ancien_achat = Achat.objects.get(pk=instance.pk)
+        ancien_montant = (ancien_achat.prix_unitaire_HT * ancien_achat.quantite) - ancien_achat.montant_paye
+        nouveau_montant = (instance.prix_unitaire_HT * instance.quantite) - instance.montant_paye
+        difference = nouveau_montant - ancien_montant
+        fournisseur.solde += difference
+        if instance.prix_unitaire_HT != ancien_achat.prix_unitaire_HT or instance.quantite != ancien_achat.quantite:
+            fournisseur.prix_total_depense_chez_fournisseur += difference
+
+    fournisseur.save()
+
+           
+        
+
+
 
 @receiver(post_delete, sender=Achat)
 def update_total_spent_by_supplier_on_delete(sender, instance, **kwargs):

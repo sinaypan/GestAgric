@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Détails de Gestion de {{ employe.nom }}</title>
+</head>
+<body>
+    <h1>Gestion de {{ employe.nom }}</h1>
+    
+    {% for gestion in gestions %}
+        <p>Date: {{ gestion.date }}</p>
+        <p>Absences: {{ gestion.absences }}</p>
+        <p>Avances: {{ gestion.avances_salaire }}</p>
+        <a href="{% url 'gerer_employe_edit' gestion.id %}">Modifier</a>
+        <a href="{% url 'gerer_employe_delete' gestion.id %}">Supprimer</a>
+    {% endfor %}
+
+    <a href="{% url 'gestion_employe_list' %}">Retour à la liste</a>
+</body>
+</html>

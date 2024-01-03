@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 class Centre(models.Model):
     code = models.CharField(max_length=20)
@@ -15,6 +16,7 @@ class Employe(models.Model):
     telephone = models.CharField(max_length=15)
     salaire_jour = models.DecimalField(max_digits=10, decimal_places=2)
     centre = models.ForeignKey('Centre', on_delete=models.CASCADE)
+    
 
     def __str__(self):
         return self.nom
@@ -22,9 +24,10 @@ class Employe(models.Model):
 
 class GestionDesEmployes(models.Model):
     employe = models.ForeignKey('Employe', on_delete=models.CASCADE)  # Lien vers le modèle Employé
-    salaires_journaliers = models.DecimalField(max_digits=8, decimal_places=2)
+    salaires_journaliers = models.DecimalField(max_digits=8, decimal_places=2,default=0)
     absences = models.IntegerField(default=0)  # Nombre de jours d'absence
-    avances_salaire = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    avances_salaire = models.DecimalField(max_digits=8, decimal_places=2, default=0, blank=True, null=True)  # Make this field optional
+    date = models.DateField(default=timezone.now)
 
     def __str__(self):
         return f"Gestion de {self.employe.nom}"
@@ -38,11 +41,18 @@ class ActiviteDuCentre(models.Model):
     def __str__(self):
         return f"Activité du {self.date} au {self.centre.designation}"
     
-class AnalyseVentes(models.Model):
-    taux_evolution_ventes = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
-    taux_evolution_benefice = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
-    top_clients = models.ManyToManyField('utilisateur.Client', blank=True)
-    produits_best_seller = models.ManyToManyField('entrepot.Produit', blank=True)
+class PV(models.Model):
+    employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
+    montant_verse = models.DecimalField(max_digits=10, decimal_places=2)
+    date = models.DateField(auto_now_add=True)
+    centre_responsable = models.ForeignKey(Centre, on_delete=models.CASCADE)
+    description = models.TextField()
 
     def __str__(self):
-        return "Analyse des Ventes pour la période spécifiée"
+        return f"PV for {self.employe.nom} on {self.date}"
+
+
+
+
+
+

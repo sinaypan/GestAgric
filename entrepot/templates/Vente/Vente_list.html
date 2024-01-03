@@ -39,7 +39,14 @@
     </ul>
     <h4>Montant total du stock : {{ total_stock_value }}</h4>
     <h4>Montant total des vente (montant gagne) : {{ total_montant_ventes }}</h4>
-    <h4>Montant total des benefices : {{ total_benefice }}</h4>
+    
+    {% if total_benefice > 0 %}
+        <h4>Montant total des benefices : {{ total_benefice }}</h4>
+    {% else %}
+        <h4>Montant total des frais perdus : {{ total_benefice }}</h4>
+    {% endif %}
+
+    
     <a href="{% url 'vente_new' %}">Ajouter une vente</a>
     <br>
     <img src="{% static 'media/top10best-sellers.png' %}" alt="top 10 best-sellers">

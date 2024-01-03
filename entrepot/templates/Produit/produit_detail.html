@@ -7,7 +7,6 @@
     <h1>Détails du produit</h1>
     <p>Code : {{ produit.code }}</p>
     <p>Désignation : {{ produit.designation }}</p>
-    <p>Fournisseur : {{ produit.fournisseur.nom }}</p>
     <!-- Affichez d'autres détails du produit -->
     <a href="{% url 'produit_edit' produit.pk %}">Modifier</a>
     <a href="{% url 'produit_delete' produit.pk %}">Supprimer</a>

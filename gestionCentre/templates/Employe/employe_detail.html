@@ -8,9 +8,11 @@
     <p>Code : {{ employe.code }}</p>
     <p>Nom : {{ employe.nom }}</p>
     <p>Adresse : {{ employe.adresse }}</p>
+    <p>Salaire mensuel : {{ employe_salaire_mensuel }}</p>
     <!-- Afficher d'autres détails de l'employé -->
     <a href="{% url 'employe_edit' employe.pk %}">Modifier</a>
     <a href="{% url 'employe_delete' employe.pk %}">Supprimer</a>
     <a href="{% url 'employe_list' %}">Retour à la liste des employés</a>
+    
 </body>
 </html>
