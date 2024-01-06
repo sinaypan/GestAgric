@@ -209,20 +209,22 @@ def pv_new(request):
 
 def Vente_centre_list(request):
     centre_id = request.GET.get('centre')
+    noms_produits = []
+    quantites = []
 
     if centre_id:
         ventes = CentreVente.objects.filter(centre__id=centre_id)
         centre = Centre.objects.get(id=centre_id)  # Récupérer l'instance du centre
         designation_centre = centre.designation
-        if designation_centre == 'centre1':
+        if designation_centre == 'centre 1':
             produits_best_seller = Produit.objects.order_by('-nombre_vente1')[:10]
             noms_produits = [produit.designation for produit in produits_best_seller]
             quantites = [produit.nombre_vente1 for produit in produits_best_seller]
-        elif designation_centre == 'centre2':
+        elif designation_centre == 'centre 2':
             produits_best_seller = Produit.objects.order_by('-nombre_vente2')[:10]
             noms_produits = [produit.designation for produit in produits_best_seller]
             quantites = [produit.nombre_vente2 for produit in produits_best_seller]
-        elif designation_centre == 'centre3':
+        elif designation_centre == 'centre 3':
             produits_best_seller = Produit.objects.order_by('-nombre_vente3')[:10]
             noms_produits = [produit.designation for produit in produits_best_seller]
             quantites = [produit.nombre_vente3 for produit in produits_best_seller]
@@ -230,7 +232,7 @@ def Vente_centre_list(request):
         ventes = CentreVente.objects.all()
         produits_best_seller = Produit.objects.order_by('-nombre_vente1')[:10]
         noms_produits = [produit.designation for produit in produits_best_seller]
-        quantites = [produit.nombre_vente0 for produit in produits_best_seller]
+        quantites = [produit.nombre_vente1 for produit in produits_best_seller]
 
     total_montant_ventes = ventes.aggregate(Sum('montant_encaisse'))['montant_encaisse__sum'] or 0
 
@@ -374,3 +376,6 @@ def etat_stock_centre(request):
         'centres':centres,
          # Pass total stock value to the template
     })
+
+def home(request):
+    return render(request, 'homeG.html')

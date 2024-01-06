@@ -125,3 +125,7 @@ def register_user(request):
         form = RegisterUserForm()
 
     return render(request, 'authentification/register_user.html', {'form': form})
+
+
+def home(request):
+    return render(request, 'homeU.html')

@@ -28,11 +28,11 @@ def update_centre_total_stock_value_on_sale(sender, instance, created, **kwargs)
         designation_centre = instance.centre.designation
 
         # Mise à jour du compteur de ventes pour le centre spécifique
-        if designation_centre == 'centre1':
+        if designation_centre == 'centre 1':
             produit.nombre_vente1 += quantite_vendue
-        elif designation_centre == 'centre2':
+        elif designation_centre == 'centre 2':
             produit.nombre_vente2 += quantite_vendue
-        elif designation_centre == 'centre3':
+        elif designation_centre == 'centre 3':
             produit.nombre_vente3 += quantite_vendue
         produit.save()
 
@@ -61,11 +61,11 @@ def update_stock_on_delete(sender, instance, **kwargs):
     designation_centre = instance.centre.designation
 
     # Mise à jour du compteur de ventes pour le centre spécifique
-    if designation_centre == 'centre1':
+    if designation_centre == 'centre 1':
         produit.nombre_vente1 -= quantite_vendue
-    elif designation_centre == 'centre2':
+    elif designation_centre == 'centre 2':
         produit.nombre_vente2 -= quantite_vendue
-    elif designation_centre == 'centre3':
+    elif designation_centre == 'centre 3':
         produit.nombre_vente3 -= quantite_vendue
     produit.save()
 

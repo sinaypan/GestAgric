@@ -4,6 +4,9 @@ from . import views
 #app_name = 'entrepot'
 
 urlpatterns = [
+
+    path('home/', views.home, name='home'),
+
     path('fournisseurs/', views.fournisseur_list, name='fournisseur_list'),
     path('fournisseur/new/', views.fournisseur_new, name='fournisseur_new'),
     path('fournisseur/<int:pk>/', views.fournisseur_detail, name='fournisseur_detail'),

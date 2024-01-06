@@ -394,6 +394,9 @@ def Vente_edit(request, pk):
 
 def Vente_delete(request, pk):
     vente_instance = get_object_or_404(Vente, pk=pk)
+    client = vente_instance.client
+    client.credit -= (vente_instance.quantite* vente_instance.prix_unitaire)-vente_instance.montant_encaisse
+    client.save()
     vente_instance.delete()
     return redirect('vente_list')
 
@@ -472,3 +475,6 @@ def etat_stock(request):
         'fournisseurs': fournisseurs,
         'total_stock_value': total_stock_value,  # Pass total stock value to the template
     })
+
+def home(request):
+    return render(request, 'homeE.html')
