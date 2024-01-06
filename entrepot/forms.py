@@ -13,7 +13,7 @@ class ProduitForm(forms.ModelForm):
     class Meta:
         model = Produit
         fields = '__all__'
-        exclude=['nombre_vente']
+        exclude=['nombre_vente0','nombre_vente1','nombre_vente2','nombre_vente3']
 
 
 class AchatForm(forms.ModelForm):

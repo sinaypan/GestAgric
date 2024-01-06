@@ -18,7 +18,10 @@ class Fournisseur(models.Model):
 class Produit(models.Model):
     code = models.CharField(max_length=20)
     designation = models.CharField(max_length=100)
-    nombre_vente = models.IntegerField(default=0)  # Ajout de l'attribut nombre_vente pour les produits
+    nombre_vente0 = models.IntegerField(default=0)
+    nombre_vente1 = models.IntegerField(default=0)
+    nombre_vente2 = models.IntegerField(default=0)
+    nombre_vente3 = models.IntegerField(default=0)
 
     def __str__(self):
         return self.designation

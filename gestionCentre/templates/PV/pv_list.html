@@ -1,0 +1,26 @@
+<body>
+    <h1>Liste des PV</h1>
+    <form method="GET">
+        <input type="text" name="q" placeholder="Rechercher un PV par nom d'employé...">
+        <button type="submit">Rechercher</button>
+    </form>
+
+    <ul>
+        {% for pv_instance in pv %}
+            <li>
+                <strong>Nom de l'Employé:</strong> {{ pv_instance.employe.nom }}<br>
+                <strong>Montant Versé:</strong> {{ pv_instance.montant_verse }}<br>
+                <strong>Date:</strong> {{ pv_instance.date|date:"d/m/Y" }}<br>
+                <strong>Centre Responsable:</strong> {{ pv_instance.centre_responsable }}<br>
+                <strong>Description:</strong> {{ pv_instance.description }}<br>
+                <!-- Add links to detail, edit, or delete views if applicable -->
+            </li>
+            <br>
+        {% empty %}
+            <li>Aucun PV trouvé.</li>
+        {% endfor %}
+    </ul>
+
+    
+    <a href="{% url 'gestion_employe_list' %}">liste des gestions employes</a>
+</body>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load custom_filters %}
+<html>
+<head>
+    <title>Liste des Ventes</title>
+    {% load static %}
+</head>
+<body>
+    <h1>Liste des Ventes</h1>
+    <form method="GET">
+        <select name="centre">
+            <option value="">Choisir un centre</option>
+            {% for centre in centres %}
+                <option value="{{ centre.id }}" {% if centre.id|stringformat:"s" == centre_id|stringformat:"s" %}selected{% endif %}>{{ centre.designation }}</option>
+            {% endfor %}
+
+        </select>
+        <button type="submit">Rechercher</button>
+    </form>
+    
+    <ul>
+        {% for vente in ventes %}
+            <li>
+                {{ vente.produit }} - {{ vente.client }}
+                <a href="{% url 'vente_centre_edit' vente.pk %}">Modifier</a>
+                <a href="{% url 'vente_centre_delete' vente.pk %}">Supprimer</a>
+                <a href="{% url 'vente_centre_detail' vente.pk %}">Détails</a>
+                {% with total=vente.quantite|multiply:vente.prix_unitaire %}
+                    {% if vente.montant_encaisse < total %}
+                        <a href="{% url 'vente_centre_completer' vente.pk %}">Payer la suite</a>
+                    {% endif %}
+                {% endwith %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'vente_centre_new' %}">Ajouter une vente</a>
+    <br>
+    <img src="{% static 'media/top10best_sellers_centre.png' %}" alt="top 10 best-sellers">
+</body>
+</html>
