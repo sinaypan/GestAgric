@@ -45,6 +45,7 @@ class Transfert(models.Model):
     quantite = models.IntegerField()
     centre_destination = models.ForeignKey('gestionCentre.Centre', on_delete=models.CASCADE)
     date_transfert = models.DateField(auto_now_add=True)
+    prix_unitaire_HT = models.DecimalField(max_digits=10, decimal_places=2,default=0)
     # Add other fields as needed
 
     def __str__(self):

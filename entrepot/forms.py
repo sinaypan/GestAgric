@@ -27,7 +27,8 @@ class TransfertForm(forms.ModelForm):
     class Meta:
         model = Transfert
         fields = '__all__'
-
+        exclude=['prix_unitaire_HT']
+        
 class VenteForm(forms.ModelForm):
     class Meta:
         model = Vente

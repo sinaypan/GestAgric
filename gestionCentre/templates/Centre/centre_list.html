@@ -13,7 +13,7 @@
     <ul>
         {% for centre in centres %}
             <li>
-                {{ centre.designation }}
+                <a href="{% url 'centre_detail' centre.pk %}">{{ centre.designation }}</a>
                 <a href="{% url 'centre_edit' centre.pk %}">Modifier</a>
                 <a href="{% url 'centre_delete' centre.pk %}">Supprimer</a>
             </li>

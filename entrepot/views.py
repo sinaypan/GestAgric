@@ -267,6 +267,10 @@ def Transfert_new(request):
         form = TransfertForm(request.POST)
         if form.is_valid():
             transfert = form.save(commit=False)
+            produit_id = form.cleaned_data['produit']  # Assuming 'produit' is the field name in the form
+            # Fetch Achat instance related to the product selected in the Transfert form
+            achat = get_object_or_404(Achat, produit_id=produit_id)
+            transfert.prix_unitaire_HT = achat.prix_unitaire_HT
             transfert.save()
             return redirect('transfert_detail', pk=transfert.pk)
     else:
@@ -320,13 +324,11 @@ def Vente_list(request):
     total_montant_ventes = ventes.aggregate(Sum('montant_encaisse'))['montant_encaisse__sum'] or 0
 
     clients = Client.objects.all()
-
-    # Récupérer les 10 produits les plus vendus
-    produits_best_seller = Produit.objects.order_by('-nombre_vente')[:10]
-
+    produits_best_seller = Produit.objects.annotate(
+    total_ventes=Sum(F('nombre_vente0') + F('nombre_vente1') + F('nombre_vente2') + F('nombre_vente3'))).order_by('-total_ventes')[:10]
     # Extraire les noms des produits et les quantités vendues
     noms_produits = [produit.designation for produit in produits_best_seller]
-    quantites = [produit.nombre_vente for produit in produits_best_seller]
+    quantites = [produit.total_ventes for produit in produits_best_seller]
 
     # Créer le graphique
     plt.figure(figsize=(10, 6))
@@ -369,6 +371,9 @@ def Vente_new(request):
         form = VenteForm(request.POST)
         if form.is_valid():
             vente = form.save(commit=False)
+            client = vente.client
+            client.credit += (vente.quantite* vente.prix_unitaire)-vente.montant_encaisse
+            client.save()
             vente.save()
             return redirect('vente_detail', pk=vente.pk)
     else:
@@ -399,7 +404,10 @@ def vente_completer(request, pk):
         if form.is_valid():
             montant_ajoute = form.cleaned_data['montant_ajoute']
             vente.montant_encaisse += montant_ajoute
-            vente.save()  # La méthode save du modèle Vente ajuste le crédit du client
+            client = vente.client
+            client.credit -= montant_ajoute
+            client.save()
+            vente.save()  
             return redirect('vente_detail', pk=vente.pk)
     else:
         form = MontantAjouteForm()

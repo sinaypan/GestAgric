@@ -8,6 +8,7 @@ from django.utils.dateparse import parse_date
 from utilisateur.models import Client
 from entrepot.models import Produit,Fournisseur
 from django.core.exceptions import ValidationError
+from entrepot.models import Transfert
 
 
 
@@ -24,7 +25,24 @@ def centre_list(request):
 # centre_detail, centre_new, centre_edit, centre_delete
 def centre_detail(request, pk):
     centre = get_object_or_404(Centre, pk=pk)
-    return render(request, 'Centre/centre_detail.html', {'centre': centre})
+
+    # Calcul du montant total des ventes pour ce centre
+    ventes = CentreVente.objects.filter(centre=centre)
+    montant_total_ventes = sum(vente.quantite * vente.prix_unitaire for vente in ventes)
+
+    # Calcul du montant total des transferts pour ce centre
+    transferts = Transfert.objects.filter(centre_destination=centre)
+    montant_total_transferts = sum(transfert.quantite * transfert.prix_unitaire_HT for transfert in transferts)
+
+    # Calcul du bénéfice en soustrayant le montant des transferts du montant des ventes
+    benefice = montant_total_ventes - montant_total_transferts
+
+    return render(request, 'Centre/centre_detail.html', {
+        'centre': centre,
+        'montant_total_ventes': montant_total_ventes,
+        'montant_total_transferts': montant_total_transferts,
+        'benefice': benefice,
+    })
 
 def centre_new(request):
     if request.method == "POST":

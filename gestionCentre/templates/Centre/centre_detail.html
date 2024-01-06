@@ -7,7 +7,13 @@
     <h1>Détails du Centre</h1>
     <p>Code : {{ centre.code }}</p>
     <p>Désignation : {{ centre.designation }}</p>
-    <!-- Affichez d'autres détails du Centre si nécessaire -->
+    
+    <!-- Affichage des montants -->
+    <p>Montant total des ventes : {{ montant_total_ventes }}</p>
+    <p>Montant total des transferts : {{ montant_total_transferts }}</p>
+    <p>Bénéfice : {{ benefice }}</p>
+    
+    <!-- Liens pour modifier, supprimer ou retourner à la liste des centres -->
     <a href="{% url 'centre_edit' centre.pk %}">Modifier</a>
     <a href="{% url 'centre_delete' centre.pk %}">Supprimer</a>
     <a href="{% url 'centre_list' %}">Retour à la liste des Centres</a>
