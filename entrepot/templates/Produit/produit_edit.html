@@ -2,14 +2,33 @@
 <html>
 <head>
     <title>{% if produit.pk %}Modifier{% else %}Ajouter{% endif %} un produit</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        /* Additional CSS styles can be added here */
+        /* Customize styles as needed */
+        body {
+            padding-top: 20px;
+        }
+        /* Add your custom styles or overrides here */
+    </style>
 </head>
 <body>
-    <h1>{% if produit.pk %}Modifier{% else %}Ajouter{% endif %} un produit</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">{% if produit.pk %}Modifier{% else %}Ajouter{% endif %}</button>
-    </form>
-    <a href="{% url 'produit_list' %}">Retour à la liste des produits</a>
+    <div class="container">
+        <h1>{% if produit.pk %}Modifier{% else %}Ajouter{% endif %} un produit</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary">
+                {% if produit.pk %}Modifier{% else %}Ajouter{% endif %}
+            </button>
+        </form>
+        <a href="{% url 'produit_list' %}" class="btn btn-secondary mt-3">Retour à la liste des produits</a>
+    </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <!-- Additional JavaScript for specific functionalities can be added here -->
 </body>
 </html>

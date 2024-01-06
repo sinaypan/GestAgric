@@ -2,26 +2,34 @@
 <html>
 <head>
     <title>Liste des Employés</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
 <body>
-    <h1>Liste des Employés</h1>
-    <form method="GET">
-        <input type="text" name="q" placeholder="Rechercher un employé...">
-        <button type="submit">Rechercher</button>
-    </form>
+    <div class="container mt-5">
+        <h1>Liste des Employés</h1>
+        <form method="GET">
+            <div class="input-group mb-3">
+                <input type="text" name="q" class="form-control" placeholder="Rechercher un employé...">
+                <button type="submit" class="btn btn-primary">Rechercher</button>
+            </div>
+        </form>
+        
+        <ul class="list-group">
+            {% for employe in employes %}
+                <li class="list-group-item">
+                    {{ employe.nom }}
+                    <a href="{% url 'employe_detail' employe.pk %}" class="btn btn-info">Détails</a>
+                    <a href="{% url 'employe_edit' employe.pk %}" class="btn btn-warning">Modifier</a>
+                    <a href="{% url 'employe_delete' employe.pk %}" class="btn btn-danger">Supprimer</a>
+                </li>
+                <!-- Afficher d'autres détails de l'employé si nécessaire -->
+            {% endfor %}
+        </ul>
+        
+        <a href="{% url 'employe_new' %}" class="btn btn-success mt-3">Ajouter un Employé</a>
+    </div>
     
-    <ul>
-        {% for employe in employes %}
-            <li>
-                {{ employe.nom }}
-                <a href="{% url 'employe_detail' employe.pk %}">Détails</a>
-                <a href="{% url 'employe_edit' employe.pk %}">Modifier</a>
-                <a href="{% url 'employe_delete' employe.pk %}">Supprimer</a>
-            </li>
-            <!-- Afficher d'autres détails de l'employé si nécessaire -->
-        {% endfor %}
-    </ul>
-    
-    <a href="{% url 'employe_new' %}">Ajouter un Employé</a>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

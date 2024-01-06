@@ -2,23 +2,30 @@
 <html>
 <head>
     <title>Liste de Gestion des Employés</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
 <body>
-    <h1>Liste de Gestion des Employés</h1>
-    <form method="GET">
-        <input type="text" name="q" placeholder="Rechercher une gestion...">
-        <button type="submit">Rechercher</button>
-    </form>
-    <ul>
-        {% for gestion in gestions %}
-            <li>
-                {{ gestion.employe.nom }} -
-                <a href="{% url 'gerer_employe_detail' gestion.employe.id %}">Détails</a>
-                <a href="{% url 'gerer_employe_edit' gestion.id %}">Modifier</a>
-                <a href="{% url 'gerer_employe_delete' gestion.id %}">Supprimer</a>
-            </li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'gerer_employe_new' %}">Ajouter une Gestion</a>
+    <div class="container mt-5">
+        <h1>Liste de Gestion des Employés</h1>
+        <form method="GET" class="mb-3">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Rechercher une gestion...">
+                <button type="submit" class="btn btn-primary">Rechercher</button>
+            </div>
+        </form>
+        <ul class="list-group">
+            {% for gestion in gestions %}
+                <li class="list-group-item">
+                    {{ gestion.employe.nom }} -
+                    <a href="{% url 'gerer_employe_detail' gestion.employe.id %}" class="btn btn-info">Détails</a>
+                    <a href="{% url 'gerer_employe_edit' gestion.id %}" class="btn btn-warning">Modifier</a>
+                    <a href="{% url 'gerer_employe_delete' gestion.id %}" class="btn btn-danger">Supprimer</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'gerer_employe_new' %}" class="btn btn-success mt-3">Ajouter une Gestion</a>
+    </div>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

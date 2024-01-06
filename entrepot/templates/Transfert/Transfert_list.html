@@ -2,31 +2,46 @@
 <html>
 <head>
     <title>Liste des Transferts</title>
+    {% load static %}
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
 <body>
-    <h1>Liste des Transferts</h1>
-    <form method="GET">
-        <input type="text" name="q" placeholder="Rechercher un transfert...">
-
-        <!-- Champs pour la plage de dates -->
-        <input type="date" name="date_debut" placeholder="Date de début">
-        <input type="date" name="date_fin" placeholder="Date de fin">
+    <div class="container">
+        <h1>Liste des Transferts</h1>
+        <form class="mb-3" method="GET">
+            <div class="form-group">
+                <input type="text" class="form-control" name="q" placeholder="Rechercher un transfert...">
+            </div>
+            <div class="form-group">
+                <label>Date de début:</label>
+                <input type="date" class="form-control" name="date_debut">
+            </div>
+            <div class="form-group">
+                <label>Date de fin:</label>
+                <input type="date" class="form-control" name="date_fin">
+            </div>
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </form>
         
-        <button type="submit">Rechercher</button>
-    </form>
-    
-    <ul>
-        {% for transfert in transferts %}
-            <li>
-                {{ transfert.produit }} - {{ transfert.centre_destination }}
-                <a href="{% url 'transfert_edit' transfert.pk %}">Modifier</a>
-                <a href="{% url 'transfert_delete' transfert.pk %}">Supprimer</a>
-                <a href="{% url 'transfert_detail' transfert.pk %}">Détails</a>
-            </li>
-            <!-- Afficher d'autres détails du transfert si nécessaire -->
-        {% endfor %}
-    </ul>
-    
-    <a href="{% url 'transfert_new' %}">Ajouter un transfert</a>
+        <ul class="list-group">
+            {% for transfert in transferts %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ transfert.produit }} - {{ transfert.centre_destination }}
+                    <div>
+                        <a href="{% url 'transfert_edit' transfert.pk %}" class="btn btn-sm btn-outline-secondary">Modifier</a>
+                        <a href="{% url 'transfert_delete' transfert.pk %}" class="btn btn-sm btn-outline-danger">Supprimer</a>
+                        <a href="{% url 'transfert_detail' transfert.pk %}" class="btn btn-sm btn-outline-primary">Détails</a>
+                    </div>
+                </li>
+                <!-- Display other transfer details if necessary -->
+            {% endfor %}
+        </ul>
+        
+        <a href="{% url 'transfert_new' %}" class="btn btn-success mt-3">Ajouter un transfert</a>
+    </div>
+
+    <!-- Include Bootstrap JS -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

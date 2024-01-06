@@ -3,25 +3,36 @@
 <head>
     <title>Liste des Clients</title>
     {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
 <body>
-    <h1>Liste des Clients</h1>
-    <form method="GET">
-        <input type="text" name="q" placeholder="Rechercher un client...">
-        <button type="submit">Rechercher</button>
-    </form>
-    
-    <ul>
-        {% for client in clients %}
-            <li>
-                {{ client.nom }} - {{ client.adresse }}
-                <a href="{% url 'client_detail' client.pk %}">Détails</a>
-                <a href="{% url 'client_edit' client.pk %}">Modifier</a>
-                <a href="{% url 'client_delete' client.pk %}">Supprimer</a>
-            </li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'client_new' %}">Ajouter un client</a>
-    <img src="{{ graphique_url }}" alt="Top 10 des Clients">
+    <div class="container">
+        <h1>Liste des Clients</h1>
+        <form method="GET" class="mb-3">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Rechercher un client...">
+                <button type="submit" class="btn btn-primary">Rechercher</button>
+            </div>
+        </form>
+        
+        <ul class="list-group">
+            {% for client in clients %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>{{ client.nom }}</strong> - {{ client.adresse }}
+                    </div>
+                    <div>
+                        <a href="{% url 'client_detail' client.pk %}" class="btn btn-info btn-sm">Détails</a>
+                        <a href="{% url 'client_edit' client.pk %}" class="btn btn-warning btn-sm">Modifier</a>
+                        <a href="{% url 'client_delete' client.pk %}" class="btn btn-danger btn-sm">Supprimer</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'client_new' %}" class="btn btn-success mt-3">Ajouter un client</a>
+        <img src="{{ graphique_url }}" alt="Top 10 des Clients" class="img-fluid mt-3">
+    </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

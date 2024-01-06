@@ -2,17 +2,26 @@
 <html>
 <head>
     <title>Détails de l'Employé</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
 <body>
-    <h1>Détails de l'Employé</h1>
-    <p>Code : {{ employe.code }}</p>
-    <p>Nom : {{ employe.nom }}</p>
-    <p>Adresse : {{ employe.adresse }}</p>
-    <p>Salaire mensuel : {{ employe_salaire_mensuel }}</p>
-    <!-- Afficher d'autres détails de l'employé -->
-    <a href="{% url 'employe_edit' employe.pk %}">Modifier</a>
-    <a href="{% url 'employe_delete' employe.pk %}">Supprimer</a>
-    <a href="{% url 'employe_list' %}">Retour à la liste des employés</a>
-    
+    <div class="container mt-5">
+        <h1>Détails de l'Employé</h1>
+        <div class="card">
+            <div class="card-body">
+                <p class="card-text">Code : {{ employe.code }}</p>
+                <p class="card-text">Nom : {{ employe.nom }}</p>
+                <p class="card-text">Adresse : {{ employe.adresse }}</p>
+                <p class="card-text">Salaire mensuel : {{ employe_salaire_mensuel }}</p>
+                <!-- Afficher d'autres détails de l'employé -->
+                <a href="{% url 'employe_edit' employe.pk %}" class="btn btn-primary">Modifier</a>
+                <a href="{% url 'employe_delete' employe.pk %}" class="btn btn-danger">Supprimer</a>
+                <a href="{% url 'employe_list' %}" class="btn btn-secondary">Retour à la liste des employés</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

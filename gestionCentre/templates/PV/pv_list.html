@@ -1,26 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des PV</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
 <body>
-    <h1>Liste des PV</h1>
-    <form method="GET">
-        <input type="text" name="q" placeholder="Rechercher un PV par nom d'employé...">
-        <button type="submit">Rechercher</button>
-    </form>
+    <div class="container mt-5">
+        <h1>Liste des PV</h1>
+        <form method="GET">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="q" placeholder="Rechercher un PV par nom d'employé...">
+                <button type="submit" class="btn btn-primary">Rechercher</button>
+            </div>
+        </form>
 
-    <ul>
-        {% for pv_instance in pv %}
-            <li>
-                <strong>Nom de l'Employé:</strong> {{ pv_instance.employe.nom }}<br>
-                <strong>Montant Versé:</strong> {{ pv_instance.montant_verse }}<br>
-                <strong>Date:</strong> {{ pv_instance.date|date:"d/m/Y" }}<br>
-                <strong>Centre Responsable:</strong> {{ pv_instance.centre_responsable }}<br>
-                <strong>Description:</strong> {{ pv_instance.description }}<br>
-                <!-- Add links to detail, edit, or delete views if applicable -->
-            </li>
-            <br>
-        {% empty %}
-            <li>Aucun PV trouvé.</li>
-        {% endfor %}
-    </ul>
+        <ul class="list-group">
+            {% for pv_instance in pv %}
+                <li class="list-group-item">
+                    <strong>Nom de l'Employé:</strong> {{ pv_instance.employe.nom }}<br>
+                    <strong>Montant Versé:</strong> {{ pv_instance.montant_verse }}<br>
+                    <strong>Date:</strong> {{ pv_instance.date|date:"d/m/Y" }}<br>
+                    <strong>Centre Responsable:</strong> {{ pv_instance.centre_responsable }}<br>
+                    <strong>Description:</strong> {{ pv_instance.description }}<br>
+                    <!-- Add links to detail, edit, or delete views if applicable -->
+                </li>
+                <br>
+            {% empty %}
+                <li class="list-group-item">Aucun PV trouvé.</li>
+            {% endfor %}
+        </ul>
 
-    
-    <a href="{% url 'gestion_employe_list' %}">liste des gestions employes</a>
+        <a href="{% url 'gestion_employe_list' %}" class="btn btn-secondary mt-3">Liste des gestions employes</a>
+    </div>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
+</html>

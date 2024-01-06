@@ -4,30 +4,49 @@
 <html>
 <head>
     <title>Détails de l'achat</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        /* Additional CSS styles can be added here */
+        /* Customize styles as needed */
+        body {
+            padding-top: 20px;
+        }
+        /* Add your custom styles or overrides here */
+    </style>
 </head>
 <body>
-    <h1>Détails de l'achat</h1>
-    <p>ID: {{ Achat.id }}</p>
-    <p>Produit: {{ Achat.produit }}</p>
-    <p>Fournisseur: {{ Achat.fournisseur }}</p>
-    <p>Quantité: {{ Achat.quantite }}</p>
-    <p>Prix unitaire HT: {{ Achat.prix_unitaire_HT }}</p>
-    <p>Montant : {{ Achat.quantite|multiply:Achat.prix_unitaire_HT }}</p>
-    <p>Date d'achat: {{ Achat.date_achat }}</p>
-    <p>Montant total payé: {{ Achat.montant_paye }}</p>
-    {% if Achat.paiement_partiel %}
-        <p>Paiement partiel effectué</p>
-    {% else %}
-        {% if Achat.montant_paye == Achat.quantite|multiply:Achat.prix_unitaire_HT %}
-            <p>Entièrement payé: Oui</p>
-        {% elif Achat.montant_paye > Achat.quantite|multiply:Achat.prix_unitaire_HT %}
-            <p>Entièrement payé: Oui (Montant excédentaire)</p>
-        {% else %}
-            <p>Entièrement payé: Non</p>
-        {% endif %}
-    {% endif %}
-    <a href="{% url 'achat_edit' pk=Achat.pk %}">Modifier</a>
-    <a href="{% url 'achat_delete' pk=Achat.pk %}">Supprimer</a>
-    <a href="{% url 'achat_list' %}">Retour à la liste</a>
+    <div class="container">
+        <h1>Détails de l'achat</h1>
+        <div class="card">
+            <div class="card-body">
+                <p>ID: {{ Achat.id }}</p>
+                <p>Produit: {{ Achat.produit }}</p>
+                <p>Fournisseur: {{ Achat.fournisseur }}</p>
+                <p>Quantité: {{ Achat.quantite }}</p>
+                <p>Prix unitaire HT: {{ Achat.prix_unitaire_HT }}</p>
+                <p>Montant : {{ Achat.quantite|multiply:Achat.prix_unitaire_HT }}</p>
+                <p>Date d'achat: {{ Achat.date_achat }}</p>
+                <p>Montant total payé: {{ Achat.montant_paye }}</p>
+                {% if Achat.paiement_partiel %}
+                    <p>Paiement partiel effectué</p>
+                {% else %}
+                    {% if Achat.montant_paye == Achat.quantite|multiply:Achat.prix_unitaire_HT %}
+                        <p>Entièrement payé: Oui</p>
+                    {% elif Achat.montant_paye > Achat.quantite|multiply:Achat.prix_unitaire_HT %}
+                        <p>Entièrement payé: Oui (Montant excédentaire)</p>
+                    {% else %}
+                        <p>Entièrement payé: Non</p>
+                    {% endif %}
+                {% endif %}
+                <a href="{% url 'achat_edit' pk=Achat.pk %}" class="btn btn-primary">Modifier</a>
+                <a href="{% url 'achat_delete' pk=Achat.pk %}" class="btn btn-danger">Supprimer</a>
+                <a href="{% url 'achat_list' %}" class="btn btn-secondary">Retour à la liste</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <!-- Additional JavaScript for specific functionalities can be added here -->
 </body>
 </html>

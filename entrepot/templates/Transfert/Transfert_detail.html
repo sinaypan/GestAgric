@@ -2,18 +2,30 @@
 <html>
 <head>
     <title>Détails du Transfert</title>
+    {% load static %}
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
 <body>
-    <h1>Détails du Transfert</h1>
-    <p>ID: {{ transfert.id }}</p>
-    <p>Produit: {{ transfert.produit }}</p>
-    <p>Centre de destination: {{ transfert.centre_destination }}</p>
-    <p>Quantité: {{ transfert.quantite }}</p>
-    <p>Date de transfert: {{ transfert.date_transfert }}</p>
-    <!-- Afficher d'autres détails du transfert si nécessaire -->
+    <div class="container">
+        <h1>Détails du Transfert</h1>
+        <div class="card">
+            <div class="card-body">
+                <p>ID: {{ transfert.id }}</p>
+                <p>Produit: {{ transfert.produit }}</p>
+                <p>Centre de destination: {{ transfert.centre_destination }}</p>
+                <p>Quantité: {{ transfert.quantite }}</p>
+                <p>Date de transfert: {{ transfert.date_transfert }}</p>
+                <!-- Add other transfer details if necessary -->
 
-    <a href="{% url 'transfert_edit' pk=transfert.pk %}">Modifier</a>
-    <a href="{% url 'transfert_delete' pk=transfert.pk %}">Supprimer</a>
-    <a href="{% url 'transfert_list' %}">Retour à la liste des Transferts</a>
+                <a href="{% url 'transfert_edit' pk=transfert.pk %}" class="btn btn-primary">Modifier</a>
+                <a href="{% url 'transfert_delete' pk=transfert.pk %}" class="btn btn-danger">Supprimer</a>
+                <a href="{% url 'transfert_list' %}" class="btn btn-secondary">Retour à la liste des Transferts</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

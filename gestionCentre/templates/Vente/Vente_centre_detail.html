@@ -2,21 +2,30 @@
 <html>
 <head>
     <title>Détails de la Vente</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
 <body>
-    <h1>Détails de la Vente</h1>
-    <p>ID: {{ vente.id }}</p>
-    <p>Produit: {{ vente.produit }}</p>
-    <p>Centre: {{vente.centre}}</p>
-    <p>Client: {{ vente.client }}</p>
-    <p>Quantité: {{ vente.quantite }}</p>
-    <p>Prix unitaire: {{ vente.prix_unitaire }}</p>
-    <p>Montant encaisse : {{vente.montant_encaisse}}</p>
-    <p>Date de vente: {{ vente.date_vente }}</p>
-    <!-- Afficher d'autres détails de la vente si nécessaire -->
+    <div class="container mt-5">
+        <h1>Détails de la Vente</h1>
+        <div class="card">
+            <div class="card-body">
+                <p>ID: {{ vente.id }}</p>
+                <p>Produit: {{ vente.produit }}</p>
+                <p>Centre: {{ vente.centre }}</p>
+                <p>Client: {{ vente.client }}</p>
+                <p>Quantité: {{ vente.quantite }}</p>
+                <p>Prix unitaire: {{ vente.prix_unitaire }}</p>
+                <p>Montant encaissé : {{ vente.montant_encaisse }}</p>
+                <p>Date de vente: {{ vente.date_vente }}</p>
+                <!-- Display other details of the sale if needed -->
+            </div>
+        </div>
+        <a href="{% url 'vente_centre_edit' pk=vente.pk %}" class="btn btn-primary mt-3">Modifier</a>
+        <a href="{% url 'vente_centre_delete' pk=vente.pk %}" class="btn btn-danger mt-3">Supprimer</a>
+        <a href="{% url 'vente_centre_list' %}" class="btn btn-secondary mt-3">Retour à la liste des Ventes</a>
+    </div>
 
-    <a href="{% url 'vente_centre_edit' pk=vente.pk %}">Modifier</a>
-    <a href="{% url 'vente_centre_delete' pk=vente.pk %}">Supprimer</a>
-    <a href="{% url 'vente_centre_list' %}">Retour à la liste des Ventes</a>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

@@ -2,25 +2,33 @@
 <html>
 <head>
     <title>Liste des Centres</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
 <body>
-    <h1>Liste des Centres</h1>
-    <form method="GET">
-        <input type="text" name="q" placeholder="Rechercher un centre...">
-        <button type="submit">Rechercher</button>
-    </form>
-    
-    <ul>
-        {% for centre in centres %}
-            <li>
-                <a href="{% url 'centre_detail' centre.pk %}">{{ centre.designation }}</a>
-                <a href="{% url 'centre_edit' centre.pk %}">Modifier</a>
-                <a href="{% url 'centre_delete' centre.pk %}">Supprimer</a>
-            </li>
-            <!-- Afficher d'autres détails du centre si nécessaire -->
-        {% endfor %}
-    </ul>
-    
-    <a href="{% url 'centre_new' %}">Ajouter un Centre</a>
+    <div class="container mt-5">
+        <h1>Liste des Centres</h1>
+        <form method="GET">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="q" placeholder="Rechercher un centre...">
+                <button type="submit" class="btn btn-primary">Rechercher</button>
+            </div>
+        </form>
+        
+        <ul class="list-group">
+            {% for centre in centres %}
+                <li class="list-group-item">
+                    <a href="{% url 'centre_detail' centre.pk %}">{{ centre.designation }}</a>
+                    <a href="{% url 'centre_edit' centre.pk %}" class="btn btn-warning">Modifier</a>
+                    <a href="{% url 'centre_delete' centre.pk %}" class="btn btn-danger">Supprimer</a>
+                </li>
+                <!-- Afficher d'autres détails du centre si nécessaire -->
+            {% endfor %}
+        </ul>
+        
+        <a href="{% url 'centre_new' %}" class="btn btn-success mt-3">Ajouter un Centre</a>
+    </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

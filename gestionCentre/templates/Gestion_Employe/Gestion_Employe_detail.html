@@ -2,18 +2,27 @@
 <html>
 <head>
     <title>Détails de Gestion de {{ employe.nom }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
 <body>
-    <h1>Gestion de {{ employe.nom }}</h1>
-    
-    {% for gestion in gestions %}
-        <p>Date: {{ gestion.date }}</p>
-        <p>Absences: {{ gestion.absences }}</p>
-        <p>Avances: {{ gestion.avances_salaire }}</p>
-        <a href="{% url 'gerer_employe_edit' gestion.id %}">Modifier</a>
-        <a href="{% url 'gerer_employe_delete' gestion.id %}">Supprimer</a>
-    {% endfor %}
+    <div class="container mt-5">
+        <h1>Gestion de {{ employe.nom }}</h1>
 
-    <a href="{% url 'gestion_employe_list' %}">Retour à la liste</a>
+        {% for gestion in gestions %}
+            <div class="card mt-3">
+                <div class="card-body">
+                    <p>Date: {{ gestion.date }}</p>
+                    <p>Absences: {{ gestion.absences }}</p>
+                    <p>Avances: {{ gestion.avances_salaire }}</p>
+                    <a href="{% url 'gerer_employe_edit' gestion.id %}" class="btn btn-primary">Modifier</a>
+                    <a href="{% url 'gerer_employe_delete' gestion.id %}" class="btn btn-danger">Supprimer</a>
+                </div>
+            </div>
+        {% endfor %}
+
+        <a href="{% url 'gestion_employe_list' %}" class="btn btn-secondary mt-3">Retour à la liste</a>
+    </div>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>
