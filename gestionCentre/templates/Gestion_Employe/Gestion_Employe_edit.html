@@ -4,22 +4,37 @@
     <title>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} Gestion d'Employé</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/css.css' %}">
+    <style>
+        body, html {
+            height: 100%;
+        }
+        .center-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} la Gestion d'Employé</h1>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary mt-3">
-                {% if form.instance.pk %}Sauvegarder les Changements{% else %}Ajouter Gestion{% endif %}
-            </button>
-        </form>
-        {% if form.instance.pk %}
-            <a href="{% url 'gerer_employe_detail' form.instance.employe.id %}" class="btn btn-secondary mt-3">Retour aux détails de la gestion</a>
-        {% else %}
-            <a href="{% url 'gestion_employe_list' %}" class="btn btn-secondary mt-3">Retour à la liste des gestions</a>
-        {% endif %}
+    <div class="center-content">
+        <div class="form-container">
+            <h1>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} la Gestion d'Employé</h1>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary mt-3">
+                    {% if form.instance.pk %}Sauvegarder les Changements{% else %}Ajouter Gestion{% endif %}
+                </button>
+            </form>
+            {% if form.instance.pk %}
+                <a href="{% url 'gerer_employe_detail' form.instance.employe.id %}" class="btn btn-secondary mt-3">Retour aux détails de la gestion</a>
+            {% else %}
+                <a href="{% url 'gestion_employe_list' %}" class="btn btn-secondary mt-3">Retour à la liste des gestions</a>
+            {% endif %}
+        </div>
     </div>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>

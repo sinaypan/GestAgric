@@ -7,17 +7,20 @@
     <title>Liste des Ventes</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/css.css' %}">
     <!-- Add any additional CSS styles if needed -->
 </head>
 <body>
-    <div class="container">
-        <h1>Liste des Ventes</h1>
-        <form class="mb-3" method="GET">
-            <div class="form-group">
-                <input type="text" class="form-control" name="q" placeholder="Rechercher une vente...">
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-4">
+    <div class="container py-4">
+        <h1 class="text-center mb-4">Liste des Ventes</h1>
+        <form class="mb-4" method="GET">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="q" placeholder="Rechercher une vente...">
+                    </div>
+                </div>
+                <div class="col-md-2">
                     <select class="form-control" name="client">
                         <option value="">Choisir un client</option>
                         {% for client in clients %}
@@ -25,21 +28,21 @@
                         {% endfor %}
                     </select>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="col-md-2">
                     <input type="date" class="form-control" name="date_debut" placeholder="Date de début">
                 </div>
-                <div class="form-group col-md-4">
+                <div class="col-md-2">
                     <input type="date" class="form-control" name="date_fin" placeholder="Date de fin">
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Rechercher</button>
+            <button type="submit" class="btn btn-primary mt-3">Rechercher</button>
         </form>
-
+    
         <ul class="list-group">
             {% for vente in ventes %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    {{ vente.produit }} - {{ vente.client }}
-                    <div>
+                <li class="list-group-item d-flex justify-content-between align-items-center mb-2">
+                    <span>{{ vente.produit }} - {{ vente.client }}</span>
+                    <div class="btn-group" role="group">
                         <a href="{% url 'vente_edit' vente.pk %}" class="btn btn-sm btn-outline-secondary">Modifier</a>
                         <a href="{% url 'vente_delete' vente.pk %}" class="btn btn-sm btn-outline-danger">Supprimer</a>
                         <a href="{% url 'vente_detail' vente.pk %}" class="btn btn-sm btn-outline-primary">Détails</a>
@@ -53,21 +56,52 @@
                 <!-- Display other sale details if necessary -->
             {% endfor %}
         </ul>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="row mt-4">
 
-        <h4>Montant total du stock : {{ total_stock_value }}</h4>
-        <h4>Montant total des ventes (montant gagné) : {{ total_montant_ventes }}</h4>
-        
-        {% if total_benefice > 0 %}
-            <h4>Montant total des bénéfices : {{ total_benefice }}</h4>
-        {% else %}
-            <h4>Montant total des frais perdus : {{ total_benefice }}</h4>
-        {% endif %}
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="card-deck">
 
-        <a href="{% url 'vente_new' %}" class="btn btn-success mt-3">Ajouter une vente</a>
-        <br>
-        <img src="{% static 'media/top10best-sellers.png' %}" class="img-fluid mt-3" alt="Top 10 best-sellers">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Stock total</h4>
+                                        <p class="card-text">{{ total_stock_value }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Ventes totales (montant gagné)</h4>
+                                        <p class="card-text">{{ total_montant_ventes }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="card {% if total_benefice > 0 %}bg-success{% else %}bg-danger{% endif %} mb-3">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Total des bénéfices / Frais perdus</h4>
+                                        <p class="card-text">{{ total_benefice }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Second div for other content -->
+                    </div>
+                    
+    <!-- Second div for other content -->
+</div>
+
+            
+                <!-- Remaining content -->
+                <a href="{% url 'vente_new' %}" class="btn btn-success mt-4">Ajouter une vente</a>
+                <br>
+            </div>
+            <div class="col-md-8">
+                <img src="{% static 'media/top10best-sellers.png' %}" class="img-fluid mt-3" alt="Top 10 best-sellers">
+            </div>
+        </div>
     </div>
-
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <!-- Add any additional scripts if needed -->
 </body>

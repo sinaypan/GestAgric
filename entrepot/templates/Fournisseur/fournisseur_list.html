@@ -1,48 +1,41 @@
 {% extends 'base.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Liste des fournisseurs</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <style>
-        /* Additional CSS styles can be added here */
-        /* Customize styles as needed */
-        body {
-            padding-top: 20px;
-        }
-        /* Add your custom styles or overrides here */
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Liste des fournisseurs</h1>
-        <form class="mb-3" method="GET">
-            <div class="input-group">
-                <input type="text" class="form-control" name="q" placeholder="Rechercher un fournisseur...">
-                <button type="submit" class="btn btn-primary">Rechercher</button>
-            </div>
-        </form>
-
-        <ul class="list-group">
-            {% for fournisseur in fournisseurs %}
-                <li class="list-group-item">
-                    <a href="{% url 'fournisseur_detail' fournisseur.pk %}">{{ fournisseur.nom }}</a>
-                    <div class="btn-group">
-                        <a href="{% url 'fournisseur_edit' fournisseur.pk %}" class="btn btn-sm btn-outline-secondary">Modifier</a>
-                        <a href="{% url 'fournisseur_delete' fournisseur.pk %}" class="btn btn-sm btn-outline-danger">Supprimer</a>
+{%load static%}
+<link rel="stylesheet" href="{% static 'css/css.css' %}">
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-5">
+            <!-- First Div - One-third of the page -->
+            <div class="mb-4">
+                <h1>Liste des fournisseurs</h1>
+                <form method="GET">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="q" placeholder="Rechercher un fournisseur...">
+                        <button type="submit" class="btn btn-primary">Rechercher</button>
                     </div>
-                </li>
-            {% endfor %}
-        </ul>
-
-        <a href="{% url 'fournisseur_new' %}" class="btn btn-success mt-3">Ajouter un fournisseur</a>
-        <img src="{{ graphique_url }}" class="img-fluid mt-3" alt="Top 10 des fournisseurs">
+                </form>
+                <ul class="list-group">
+                    {% for fournisseur in fournisseurs %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <a href="{% url 'fournisseur_detail' fournisseur.pk %}" class="text-decoration-none">{{ fournisseur.nom }}</a>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <a href="{% url 'fournisseur_edit' fournisseur.pk %}" class="btn btn-sm btn-outline-secondary">Modifier</a>
+                                <a href="{% url 'fournisseur_delete' fournisseur.pk %}" class="btn btn-sm btn-outline-danger">Supprimer</a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <a href="{% url 'fournisseur_new' %}" class="btn btn-success mt-4">Ajouter un fournisseur</a>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <!-- Second Div - Two-thirds of the page -->
+            <h3 class="mb-4">Top 10 des fournisseurs</h3>
+            <img src="{{ graphique_url }}" class="img-fluid rounded" alt="Top 10 des fournisseurs" style="width: 100%; height: auto; max-height: 400px;">
+        </div>
     </div>
-
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <!-- Additional JavaScript for specific functionalities can be added here -->
-</body>
-</html>
+</div>
 {% endblock %}
+

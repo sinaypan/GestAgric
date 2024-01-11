@@ -9,6 +9,9 @@ from .forms import RegisterUserForm
 import matplotlib.pyplot as plt
 from django.db.models import Sum
 
+from django.urls import reverse
+
+
 
 def client_list(request):
     query = request.GET.get('q')
@@ -86,7 +89,7 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('register_user')  # Change this to the correct URL after login
+            return redirect(reverse('entrepot:home'))  # Change this to the correct URL after login
         else:
             messages.error(request, "There was an error logging in. Please try again.")
             return redirect('login')
@@ -96,7 +99,7 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     messages.success(request, "You were logged out!")
-    return redirect('produit_list')  # Change this to the correct URL after logout
+    return redirect('home')  # Change this to the correct URL after logout
 
 def register_user(request):
     if request.method == "POST":
@@ -105,22 +108,10 @@ def register_user(request):
             user = form.save(commit=False)
             user.adresse = form.cleaned_data['adresse']
             user.telephone = form.cleaned_data['telephone']
-            user.credit = form.cleaned_data['credit']
             user.save()
-
-            # Création du client associé à l'utilisateur
-            Client.objects.create(
-                user=user,
-                code=f"Code-{user.username}",  # Vous pouvez adapter la génération du code
-                nom=user.get_full_name(),
-                adresse=user.adresse,
-                telephone=user.telephone,
-                credit=user.credit
-            )
-
             login(request, user)
             messages.success(request, "Inscription réussie !")
-            return redirect('login')  # Redirection vers la page de connexion après l'inscription
+            return redirect('entrepot:home')  # Redirection vers la page de connexion après l'inscription
     else:
         form = RegisterUserForm()
 

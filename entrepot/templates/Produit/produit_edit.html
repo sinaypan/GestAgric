@@ -3,30 +3,45 @@
 <head>
     <title>{% if produit.pk %}Modifier{% else %}Ajouter{% endif %} un produit</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"><link rel="stylesheet" href="{% static 'css/css.css' %}">
     <style>
         /* Additional CSS styles can be added here */
         /* Customize styles as needed */
         body {
             padding-top: 20px;
         }
+        .center-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
         /* Add your custom styles or overrides here */
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>{% if produit.pk %}Modifier{% else %}Ajouter{% endif %} un produit</h1>
-        <form method="post">
-            {% csrf_token %}
-            <div class="mb-3">
-                {{ form.as_p }}
-            </div>
-            <button type="submit" class="btn btn-primary">
-                {% if produit.pk %}Modifier{% else %}Ajouter{% endif %}
-            </button>
-        </form>
-        <a href="{% url 'produit_list' %}" class="btn btn-secondary mt-3">Retour à la liste des produits</a>
+
+    <div class="center-content">
+        <div>
+            <h1>{% if produit.pk %}Modifier{% else %}Ajouter{% endif %} un produit</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_nom" >Code:</label>
+                    {{ form.code }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_description" >Designation:</label>
+                    {{ form.designation }}
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    {% if produit.pk %}Modifier{% else %}Ajouter{% endif %}
+                </button>
+            </form>
+            <a href="{% url 'produit_list' %}" class="btn btn-secondary mt-3">Retour à la liste des produits</a>
+        </div>
     </div>
+
 
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <!-- Additional JavaScript for specific functionalities can be added here -->

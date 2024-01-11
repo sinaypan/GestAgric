@@ -1,10 +1,64 @@
 <!-- homeU.html -->
+{% extends 'base1.html' %}
 
-{% extends 'base.html' %}
-
-{% block title %}Page d'Accueil Utilisateur{% endblock title %}
+{% block title %}GestAgric{% endblock title %}
 
 {% block content %}
-    <h1>Bienvenue sur la Page d'Accueil Utilisateur</h1>
-    <!-- Autre contenu spécifique à la page -->
+
+    <style>
+        /* Add this embedded CSS within the <style> tags */
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #fc6076, #ff9a44);
+        }
+
+        .content-wrapper {
+            padding: 50px 0; /* Adjust the padding as needed */
+        }
+
+        .farm-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: auto;
+            border-radius: 8px; /* Adjust as needed */
+            margin-bottom: 10px;
+        }
+
+        /* Adjust the text styles as desired */
+        .welcome-text {
+            text-align: center;
+            color: #fff;
+            margin-top: 10%; /* Reduce top margin */
+            padding-top: 10px; /* Reduce top padding */
+            font-size: 2em;
+            line-height: 1.5;
+        }
+
+        .dream-text {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px; /* Reduce top margin */
+            padding-top: 10px; /* Reduce top padding */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+    </style>
+    {% load static %}
+    <div class="content-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="{% static 'media/truck.png' %}" alt="truck Farm" class="farm-image">
+                </div>
+                <div class="col-md-6 welcome-text">
+                    <h1>Welcome to GestAgric</h1>
+                    <p class="dream-text">Un rêve qui devient réalité</p>
+                    <!-- Additional styling within a paragraph tag -->
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock content %}

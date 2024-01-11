@@ -4,21 +4,31 @@
     <title>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un Transfert</title>
     {% load static %}
     <!-- Include Bootstrap CSS -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"><link rel="stylesheet" href="{% static 'css/css.css' %}">
+    <style>
+        .center-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un Transfert</h1>
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                {{ form.as_p }}
-            </div>
-            <button type="submit" class="btn btn-primary">
-                {% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %}
-            </button>
-        </form>
-        <a href="{% url 'transfert_list' %}" class="btn btn-secondary mt-3">Retour à la liste des Transferts</a>
+    <div class="center-content">
+        <div class="">
+            <h1>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un Transfert</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.as_p }}
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    {% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %}
+                </button>
+            </form>
+            <a href="{% url 'transfert_list' %}" class="btn btn-secondary mt-3">Retour à la liste des Transferts</a>
+        </div>
     </div>
 
     <!-- Include Bootstrap JS -->

@@ -6,30 +6,45 @@
     <title>Liste des Transferts</title>
     {% load static %}
     <!-- Include Bootstrap CSS -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"><link rel="stylesheet" href="{% static 'css/css.css' %}">
 </head>
 <body>
-    <div class="container">
-        <h1>Liste des Transferts</h1>
-        <form class="mb-3" method="GET">
-            <div class="form-group">
-                <input type="text" class="form-control" name="q" placeholder="Rechercher un transfert...">
+    <div class="container py-4">
+        <h1 class="text-center mb-4">Liste des Transferts</h1>
+
+        <form class="mb-4" method="GET">
+            <div class="row align-items-end">
+                <div class="col-md-3">
+                    <div class="form-group mb-2">
+                        <input type="text" class="form-control" name="q" placeholder="Rechercher un transfert...">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-2">
+                        <label for="date_debut" class="form-label">Date de début:</label>
+                        <input type="date" class="form-control" id="date_debut" name="date_debut">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-2">
+                        <label for="date_fin" class="form-label">Date de fin:</label>
+                        <input type="date" class="form-control" id="date_fin" name="date_fin">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-2">
+                        <button type="submit" class="btn btn-primary btn-block">Rechercher</button>
+                    </div>
+                    
+                </div>
             </div>
-            <div class="form-group">
-                <label>Date de début:</label>
-                <input type="date" class="form-control" name="date_debut">
-            </div>
-            <div class="form-group">
-                <label>Date de fin:</label>
-                <input type="date" class="form-control" name="date_fin">
-            </div>
-            <button type="submit" class="btn btn-primary">Rechercher</button>
         </form>
-        
+
+    
         <ul class="list-group">
             {% for transfert in transferts %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    {{ transfert.produit }} - {{ transfert.centre_destination }}
+                <li class="list-group-item d-flex justify-content-between align-items-center mb-2">
+                    <span>{{ transfert.produit }} - {{ transfert.centre_destination }}</span>
                     <div>
                         <a href="{% url 'transfert_edit' transfert.pk %}" class="btn btn-sm btn-outline-secondary">Modifier</a>
                         <a href="{% url 'transfert_delete' transfert.pk %}" class="btn btn-sm btn-outline-danger">Supprimer</a>
@@ -39,7 +54,7 @@
                 <!-- Display other transfer details if necessary -->
             {% endfor %}
         </ul>
-        
+    
         <a href="{% url 'transfert_new' %}" class="btn btn-success mt-3">Ajouter un transfert</a>
     </div>
 

@@ -7,42 +7,60 @@
     <title>Liste des Ventes</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/css.css' %}">
 </head>
 <body>
     <div class="container mt-5">
-        <h1>Liste des Ventes</h1>
-        <form method="GET">
-            <div class="mb-3">
-                <select name="centre" class="form-select">
-                    <option value="">Choisir un centre</option>
-                    {% for centre in centres %}
-                        <option value="{{ centre.id }}" {% if centre.id|stringformat:"s" == centre_id|stringformat:"s" %}selected{% endif %}>{{ centre.designation }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Rechercher</button>
-        </form>
+        <h1 class="mb-4">Liste des Ventes</h1>
         
-        <ul class="list-group mt-4">
-            {% for vente in ventes %}
-                <li class="list-group-item">
-                    {{ vente.produit }} - {{ vente.client }}
-                    <a href="{% url 'vente_centre_edit' vente.pk %}" class="btn btn-warning btn-sm">Modifier</a>
-                    <a href="{% url 'vente_centre_delete' vente.pk %}" class="btn btn-danger btn-sm">Supprimer</a>
-                    <a href="{% url 'vente_centre_detail' vente.pk %}" class="btn btn-info btn-sm">Détails</a>
-                    {% with total=vente.quantite|multiply:vente.prix_unitaire %}
-                        {% if vente.montant_encaisse < total %}
-                            <a href="{% url 'vente_centre_completer' vente.pk %}" class="btn btn-success btn-sm">Payer la suite</a>
-                        {% endif %}
-                    {% endwith %}
-                </li>
-            {% endfor %}
-        </ul>
-
-        <a href="{% url 'vente_centre_new' %}" class="btn btn-primary mt-3">Ajouter une vente</a>
-        <br>
-        <img src="{% static 'media/top10best_sellers_centre.png' %}" class="mt-3" alt="top 10 best-sellers">
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <form method="GET" class="d-flex">
+                    <div class="flex-grow-1 me-2">
+                        <select name="centre" class="form-select">
+                            <option value="">Choisir un centre</option>
+                            {% for centre in centres %}
+                                <option value="{{ centre.id }}" {% if centre.id|stringformat:"s" == centre_id|stringformat:"s" %}selected{% endif %}>{{ centre.designation }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Rechercher</button>
+                </form>
+            </div>
+        </div>
+    
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="list-group">
+                        {% for vente in ventes %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    {{ vente.produit }} - {{ vente.client }}
+                                </div>
+                                <div>
+                                    <a href="{% url 'vente_centre_edit' vente.pk %}" class="btn btn-warning btn-sm me-1">Modifier</a>
+                                    <a href="{% url 'vente_centre_delete' vente.pk %}" class="btn btn-danger btn-sm me-1">Supprimer</a>
+                                    <a href="{% url 'vente_centre_detail' vente.pk %}" class="btn btn-info btn-sm me-1">Détails</a>
+                                    {% with total=vente.quantite|multiply:vente.prix_unitaire %}
+                                        {% if vente.montant_encaisse < total %}
+                                            <a href="{% url 'vente_centre_completer' vente.pk %}" class="btn btn-success btn-sm">Payer la suite</a>
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <a href="{% url 'vente_centre_new' %}" class="btn btn-primary mt-3">Ajouter une vente</a>
+                </div>
+                <div class="col-md-6">
+                    <img src="{% static 'media/top10best_sellers_centre.png' %}" class="img-fluid mt-3" alt="top 10 best-sellers">
+                </div>
+            </div>
+        </div>
     </div>
+    
+    
 
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
