@@ -84,4 +84,9 @@ Une fois tout installé, voici comment lancer le projet à chaque fois :
 
      [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
+    -le manager se connecte avec ses identifiants :
+
+#      identifiant : yanis
+#      mot de passe : yanis
+
 Ce projet est sous licence [ISILAAGENCYPROTECTION] - consultez le fichier LICENSE pour plus de détails.
