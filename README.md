@@ -44,6 +44,9 @@ Bienvenue dans GestAgric ! Un projet Django qui vous donne un accès à un syst�
      ```bash
      pip install matplotlib
      ```
+      La bibliothèque MATLAB comprend un large éventail de fonctions intégrées qui permettent aux utilisateurs de réaliser des tâches telles que le traitement du signal, la modélisation mathématique, la simulation, l'analyse de données, la visualisation, et bien plus encore. Ces fonctions couvrent divers domaines des mathématiques appliquées et des sciences de l'ingénieur.
+
+
 
 4. Fermez le terminal.
 
