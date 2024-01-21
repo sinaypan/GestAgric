@@ -27,3 +27,15 @@ class RegisterUserForm(UserCreationForm):
         self.fields['username'].widget.attrs['class'] = 'form-control'
         self.fields['password1'].widget.attrs['class'] = 'form-control'
         self.fields['password2'].widget.attrs['class'] = 'form-control'
+
+class VerificationCodeForm(forms.Form):
+    verification_code = forms.CharField(
+        label="Code de vérification",
+        max_length=4,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        error_messages={
+            'required': 'Veuillez entrer le code de vérification.',
+            'max_length': 'Le code de vérification doit contenir au maximum 4 caractères.',
+            'min_length': 'Le code de vérification doit contenir au minimum 4 caractères.',
+        }
+    )

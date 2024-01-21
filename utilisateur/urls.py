@@ -15,6 +15,8 @@ urlpatterns = [
     path('authentification/login_user', views.login_user, name="login"),
     path('authentification/logout_user', views.logout_user, name='logout'),
     path('authentification/register_user', views.register_user, name='register_user'),
+    path('utilisateur/authentification/verify-user/<int:user_profile_id>/', views.verify_user, name='verify_user'),
+
 
    path('home', views.home, name='home'),
 

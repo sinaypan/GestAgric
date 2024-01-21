@@ -31,6 +31,10 @@
     
                     <input type="submit" value="Login" class="btn btn-primary">
                 </form>
+
+                {% if user_not_verified %}
+                    <p>Votre compte n'est pas encore vérifié. <a href="{% url 'verify_user' %}">Cliquez ici</a> pour vérifier votre compte.</p>
+                {% endif %}
             </div>
         </div>
     </div>

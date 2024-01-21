@@ -11,3 +11,11 @@ class Client(models.Model):
 
     def __str__(self):
         return self.nom
+
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    adresse = models.CharField(max_length=200)
+    telephone = models.CharField(max_length=15)
+    verification_code = models.CharField(max_length=4, null=True, blank=True)
