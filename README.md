@@ -86,7 +86,7 @@ Une fois tout installé, voici comment lancer le projet à chaque fois :
 
     -le manager se connecte avec ses identifiants :
 
-#      identifiant : yanis
-#      mot de passe : yanis
+      identifiant : yanis
+      mot de passe : yanis
 
 Ce projet est sous licence [ISILAAGENCYPROTECTION] - consultez le fichier LICENSE pour plus de détails.
